@@ -56,7 +56,7 @@ const Medicos = () => {
                     <td>Ativo</td>
                     <td>
                       <button>Editar</button>
-                      <button>Excluir</button>
+                      <button>Deletar</button>
                     </td>
                   </tr>
                 </tbody>
