@@ -13,30 +13,34 @@ const Medicos = () => {
             <button>+ Add</button>
           </div>
           <div className={styles.filters}>
-            <div className={styles.filter}>
-              <label htmlFor="especialidade">Especialidade</label>
-              <select name="especialidade" id="especialidade">
-                <option value="all">All</option>
-              </select>
+            <div className={styles.first_line}>
+              <div className={styles.filter}>
+                <label htmlFor="especialidade">Especialidade</label>
+                <select name="especialidade" id="especialidade">
+                  <option value="all">All</option>
+                </select>
+              </div>
+              <div className={styles.filter}>
+                <label htmlFor="status">Status</label>
+                <select name="status" id="status">
+                  <option value="all">All</option>
+                </select>
+              </div>
             </div>
-            <div className={styles.filter}>
-              <label htmlFor="status">Status</label>
-              <select name="status" id="status">
-                <option value="all">All</option>
-              </select>
+            <div className={styles.second_line}>
+              <div className={styles.pagination}>
+                <label htmlFor="itemsPerPage">Items per page</label>
+                <select name="itemsPerPage" id="itemsPerPage">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                </select>
+                </div>
+                <div className={styles.search}>
+                  <input type="text" placeholder="Buscar" />
+                </div>
+              </div>
             </div>
-            <div className={styles.filter}>
-              <label htmlFor="itemsPerPage">Items per page</label>
-              <select name="itemsPerPage" id="itemsPerPage">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-              </select>
-            </div>
-            <div className={styles.search}>
-              <input type="text" placeholder="Buscar" />
-            </div>
-          </div>
           <div className={styles.table}>
             <table>
               <thead>
@@ -65,4 +69,5 @@ const Medicos = () => {
     </section>
   );
 };
+
 export default Medicos;

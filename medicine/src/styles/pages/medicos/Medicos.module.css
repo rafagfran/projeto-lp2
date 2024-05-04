@@ -49,7 +49,7 @@
 
 }
 
-.items_perPage{
+.pagination{
     display: flex;
     flex-direction: column;
 }
