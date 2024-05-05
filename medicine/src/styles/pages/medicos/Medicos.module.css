@@ -8,14 +8,20 @@
     display: flex;
     height: 100%;
     flex-direction: column;
-    border: 1px solid black;
+    border: 1px solid #d1d1d1;
     
 }
 
-.top{
-    border-bottom: 1px solid black;
+.header{
+    border-bottom: 1px solid #d1d1d1;
     padding: 2px 20px;
     margin-bottom: 30px;
+}
+
+.header > h2{
+    font-weight: 500;
+    font-size: 1rem;
+    color: #410f9e;
 }
 
 .body{
@@ -37,6 +43,11 @@
     flex: 1;
 }
 
+label{
+    color: #410f9e;
+    font-size: .9rem;
+}
+
 .first_line{
     display: flex;
     gap: 20px;
@@ -46,7 +57,7 @@
     display: flex;
     gap: 20px;
     align-items: end;
-
+    
 }
 
 .pagination{
@@ -55,7 +66,7 @@
 }
 
 .buscar > input{ 
-    width: 300px;
+    width: 400px;
     border: 1px solid rgb(153, 151, 151);
 }
 
@@ -73,9 +84,22 @@
     background: rgb(0, 0, 0);
     color: white;
 }
-.table > table > thead th{
+.table > table > thead > tr > th{
     text-align: start;
 }
+
+
+.table > table > thead > tr > #th_status,
+.table > table > thead > tr > #th_acoes{
+    text-align: center;
+}
+
+.table > table > tbody > tr > #td_status,
+.table > table > tbody > tr > #td_acoes{
+   text-align: center;
+}
+
+
 .table > table > tbody > tr {
     border-bottom: 1px solid black;
 }

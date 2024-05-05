@@ -1,8 +1,14 @@
-header{
+.header{
     background: white;
     height: 100px;
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 10px;
 }
+
+#rota_atual {
+    font-size: .8rem;
+    color: #410f9e;
+} 

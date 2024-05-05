@@ -1,16 +1,17 @@
 import React from 'react';
 import styles from '../../styles/pages/medicos/Medicos.module.css';
+import Button from '../../components/common/Button';
 
 const Medicos = () => {
   return (
     <section className={styles.medicos}>
       <div className={styles.container}>
-        <header className={styles.top}>
+        <header className={styles.header}>
           <h2>Registro de médicos</h2>
         </header>
         <div className={styles.body}>
           <div className={styles.add}>
-            <button>+ Add</button>
+            <Button text="+ Add" />
           </div>
           <div className={styles.filters}>
             <div className={styles.first_line}>
@@ -45,18 +46,18 @@ const Medicos = () => {
             <table>
               <thead>
                 <tr>
-                  <th>Nome</th>
-                  <th>Especialidade</th>
-                  <th>Status</th>
-                  <th>Ações</th>
+                  <th id={styles.th_nome}>Nome</th>
+                  <th id={styles.th_especialidade}>Especialidade</th>
+                  <th id={styles.th_status}>Status</th>
+                  <th id={styles.th_acoes}>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Dr. João</td>
                   <td>Cardiologista</td>
-                  <td>Ativo</td>
-                  <td>
+                  <td id={styles.td_status}>Ativo</td>
+                  <td id={styles.td_acoes}>
                     <button>Editar</button>
                     <button>Deletar</button>
                   </td>
