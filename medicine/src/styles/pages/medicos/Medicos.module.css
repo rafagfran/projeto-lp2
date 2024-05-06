@@ -1,15 +1,7 @@
 .medicos{
-    padding: 30px;
-    flex:1;
-}
-
-.container{
-    background: white;
     display: flex;
-    height: 100%;
-    flex-direction: column;
-    border: 1px solid #d1d1d1;
-    
+    flex-direction: column;  
+    flex: 1;
 }
 
 .header{
@@ -64,17 +56,23 @@ label{
     display: flex;
     flex-direction: column;
 }
-
-.buscar > input{ 
+.search{
+    display: flex;
+    flex-direction: column;
     width: 400px;
+}
+
+.search > input{ 
+    width: 100%;
     border: 1px solid rgb(153, 151, 151);
 }
 
 .table{
     display: flex;
     flex-direction: column;
-
+    
 }
+
 .table > table{
     border-collapse: collapse;
     width: 100%;
@@ -99,9 +97,21 @@ label{
    text-align: center;
 }
 
+.table > table > tbody > tr > #td_acoes{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+}
+
 
 .table > table > tbody > tr {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(170, 170, 170);
+    
+}
+
+.table > table > tbody > tr > td{
+    padding: 10px 0;
 }
 
 

@@ -1,10 +1,12 @@
 import React from 'react'
-import Style from '../../../styles/components/layout/container/Container.module.css'
+import styles from '../../../styles/components/layout/container/Container.module.css'
 
 const Container = ({children}) => {
   return (
-    <section className={Style.container}>
-      {children}
+    <section className={styles.container}>
+      <div className={styles.body}>
+        {children}
+      </div>
     </section>
   )
 }

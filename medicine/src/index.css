@@ -5,3 +5,8 @@
   font-size: 16px;
   font-family: 'Poppins', sans-serif;
 }
+
+body{
+  overflow: hidden;
+  max-height: 100vh;
+}
