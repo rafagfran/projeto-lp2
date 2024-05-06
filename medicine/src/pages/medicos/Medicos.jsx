@@ -45,7 +45,7 @@ useEffect(() => {
                 </div>
               <div className={styles.filter_crm}>
                 <label htmlFor="buscarCrm">Buscar CRM</label>
-                  <input name="buscarCrm" id="buscarCrm" onChange={(e) => setFiltroCrm(e.target.value)}>
+                  <input name="buscarCrm" id="buscarCrm" placeholder="Buscar"  onChange={(e) => setFiltroCrm(e.target.value)}>
                 </input>
               </div>
               
