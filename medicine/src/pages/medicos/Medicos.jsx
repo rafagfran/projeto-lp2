@@ -13,10 +13,10 @@ const Medicos = () => {
 
 useEffect(() => {
   const fetchData = async () => {
+    const url = 'http://localhost:8080/api/v1/doctor/getAll'
     try {
-      const url = 'http://localhost:8080/api/v1/doctor/getAll'
-    const response = await axios.get(url)
-    setDados(response.data)
+      const response = await axios.get(url)
+      setDados(response.data)
     } catch (error) {
       console.error('Erro ao recuperar os dados:', error);
     }

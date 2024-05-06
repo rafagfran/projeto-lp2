@@ -78,17 +78,22 @@
 }
 
 .table > table > thead{
-    background: rgb(0, 0, 0);
+    background: rgb(44, 44, 44);
     color: white;
+    
+    
 }
+
 .table > table > thead > tr > th{
     text-align: start;
+    padding-left: 10px;
 }
 
 
 .table > table > thead > tr > #th_status,
 .table > table > thead > tr > #th_acoes{
     text-align: center;
+    
 }
 
 .table > table > tbody > tr > #td_status,
@@ -110,7 +115,7 @@
 }
 
 .table > table > tbody > tr > td{
-    padding: 10px 0;
+    padding: 10px 0 10px 10px;
 }
 
 
