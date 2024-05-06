@@ -103,11 +103,21 @@
 
 .table > table > tbody > tr > #td_acoes{
     display: flex;
-    gap: 10px;
+    gap: 20px;
     justify-content: center;
-
 }
 
+.table > table > tbody > tr > #td_acoes > button{
+    background: none;
+    border: none;
+    
+}
+
+.table > table > tbody > tr > #td_acoes > button > img{
+    width: 25px;
+    height: 25px;
+
+}
 
 .table > table > tbody > tr {
     border-bottom: 1px solid rgb(170, 170, 170);

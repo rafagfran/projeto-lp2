@@ -4,6 +4,9 @@ import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import EditIcon from '../../assets/edit-icon.png'
+import DeleteIcon from '../../assets/delete-icon.png';
+
 const Medicos = () => {
   const navigate = useNavigate()
   const [dados, setDados] = useState([])
@@ -96,8 +99,10 @@ useEffect(() => {
                     <td id={styles.td_crm}>{medico.crm}</td>
                     <td id={styles.td_status}>{medico.status ? "Ativo" : "Inativo"}</td>
                     <td id={styles.td_acoes}>
-                      <ButtonCommon text="Edit" paddingButton="2px 10px"/>
-                      <ButtonCommon text="Delete" paddingButton="2px 10px"/>
+                        <button><img src={EditIcon} alt="" /></button>
+                        <button><img src={DeleteIcon} alt="" /></button>
+                      {/* <ButtonCommon text="Edit" paddingButton="2px 10px"/>
+                      <ButtonCommon text="Delete" paddingButton="2px 10px"/> */}
                     </td>
                   </tr>
                 ))}
