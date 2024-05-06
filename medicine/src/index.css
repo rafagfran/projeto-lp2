@@ -10,3 +10,8 @@ body{
   overflow: hidden;
   max-height: 100vh;
 }
+
+label{
+  color: #410f9e;
+  font-size: .9rem;
+}

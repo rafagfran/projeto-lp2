@@ -39,12 +39,27 @@ useEffect(() => {
           </div>
           <div className={styles.filters}>
             <div className={styles.first_line}>
-              <div className={styles.filter}>
+              <div className={styles.filter_nome}>
+                  <label htmlFor="buscarNome">Buscar nome</label>
+                  <input type="text" id="buscarNome" placeholder="Buscar" onChange={(e) => setSearch(e.target.value)}/>
+                </div>
+              <div className={styles.filter_crm}>
                 <label htmlFor="buscarCrm">Buscar CRM</label>
                   <input name="buscarCrm" id="buscarCrm" onChange={(e) => setFiltroCrm(e.target.value)}>
                 </input>
               </div>
-              <div className={styles.filter}>
+              
+            </div>
+            <div className={styles.second_line}>
+              <div className={styles.pagination}>
+                <label htmlFor="itensPorPagina">Itens por pagina</label>
+                <select name="itensPorPagina" id="itensPorPagina">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="30">30</option>
+                </select>
+                </div>
+                <div className={styles.filter_status}>
                 <label htmlFor="status">Status</label>
                 <select name="status" id="status" onChange={(e) => setFiltroStatus(e.target.value)}>
                   <option value="all">All</option>
@@ -52,20 +67,7 @@ useEffect(() => {
                   <option value="inativo">Inativo</option>
                 </select>
               </div>
-            </div>
-            <div className={styles.second_line}>
-              <div className={styles.pagination}>
-                <label htmlFor="itemsPerPage">Items per page</label>
-                <select name="itemsPerPage" id="itemsPerPage">
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="30">30</option>
-                </select>
-                </div>
-                <div className={styles.search}>
-                  <label htmlFor="buscarNome">Buscar Nome</label>
-                  <input type="text" id="buscarNome" placeholder="Buscar" onChange={(e) => setSearch(e.target.value)}/>
-                </div>
+                
               </div>
             </div>
           <div className={styles.table}>
@@ -87,7 +89,7 @@ useEffect(() => {
                   const filterByCrm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
 
                   return filterByName && filterByStatus && filterByCrm
-                  
+
                 }).map(medico => (
                   <tr key={medico.id}>
                     <td id={styles.td_nome}>{medico.nome}</td>

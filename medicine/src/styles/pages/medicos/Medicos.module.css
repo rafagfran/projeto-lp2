@@ -29,38 +29,37 @@
     gap: 20px;
 }
 
-.filter{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
 
-label{
-    color: #410f9e;
-    font-size: .9rem;
-}
 
 .first_line{
     display: flex;
     gap: 20px;
 }
 
+.filter_nome,
+.filter_crm{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .second_line{
     display: flex;
     gap: 20px;
     align-items: end;
-    
 }
 
 .pagination{
     display: flex;
     flex-direction: column;
 }
-.search{
+
+.filter_status{
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 100px;
 }
+
 
 .search > input{ 
     width: 100%;
