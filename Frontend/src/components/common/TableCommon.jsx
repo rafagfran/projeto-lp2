@@ -1,10 +1,20 @@
 import React from 'react'
 import styles from '../../styles/components/common/TableCommon.module.css'
+import { useParams } from 'react-router-dom'
+import { useState } from 'react'
 
 const TableCommon = ({columns, data}) => {
+  
 
   const styleColumns = {
     textAlign: 'center',
+  }
+
+  const handleClickPageLeft = () => {
+    pageNumber
+  }
+
+  const handleClickPageRight = () => {
   }
 
   return (
@@ -55,6 +65,10 @@ const TableCommon = ({columns, data}) => {
                 ))}
             </tbody>
         </table>
+        <div className={styles.action_pagination}>
+          <button onClick={handleClickPageLeft}>Anterior</button>
+          <button onClick={handleClickPageRight}>Próximo</button>
+        </div>
     </>
   )
 }

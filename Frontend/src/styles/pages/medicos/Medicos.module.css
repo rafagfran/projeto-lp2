@@ -39,15 +39,12 @@
     grid-column-end: 7;
 }
 
-.pagination{
-    display: flex;
-    flex-direction: column;
 
-}
-
+.pagination,
 .filter_status{
     display: flex;
     flex-direction: column;
+    justify-content: end;
 }
 
 

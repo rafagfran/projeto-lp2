@@ -4,7 +4,7 @@
 }
 
 .thead{
-    background: rgb(44, 44, 44);
+    background: #040442;
     color: white;
 }
 
@@ -20,4 +20,20 @@
 
 .td{
     padding: 5px 0 10px 10px;
+}
+
+.action_pagination{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.action_pagination > button{
+    padding: 5px 10px;
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    background: none;
 }
