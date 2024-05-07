@@ -72,8 +72,8 @@ export default class MedicosCrud{
 
     async delete(id){
         try {
-            const response = await axios.delete(`${this.#urlDelete}/${id}`)
-            return response.status
+            const response = await axios.delete(`${this.#urlDelete}`, id)
+            return response.data
         } catch (error) {
             throw error;   
         }

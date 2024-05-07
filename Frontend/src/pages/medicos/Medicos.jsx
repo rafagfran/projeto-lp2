@@ -46,6 +46,21 @@ const Medicos = () => {
     console.log(id)
   }
 
+  const handleClickDelete = async (id) => {
+    if (confirm("Você deseja realmente excluir este item?")) {
+      const medicosCrud = new MedicosCrud()
+      try {
+        const response = await medicosCrud.delete(id)
+        alert(response.data)
+      } catch (error) {
+        console.error("Error deleting:", error);
+      }
+    } else {
+      // Código para cancelar a exclusão
+    }
+       
+  }
+
   const dataTableValues = dados.filter((item) => {
       const filterByName = filtroNome.toLowerCase() === ''? item : item.nome.toLowerCase().includes(filtroNome)
       const filterByStatus = filtroStatus === 'all' ? item : item.status === (filtroStatus === 'ativo' ? true : false)
@@ -59,7 +74,7 @@ const Medicos = () => {
       column_acoes: (
         <div id={styles.td_acoes}>
           <button onClick={() => handleClickEdit(medico.id)}><img src={EditIcon} alt="" /></button>
-          <button><img src={DeleteIcon} alt="" /></button>
+          <button onClick={() => handleClickDelete(medico.id)}><img src={DeleteIcon} alt="" /></button>
       </div>
       )
     }
@@ -90,10 +105,10 @@ const Medicos = () => {
           </div>
           <div className={styles.filters}>
             <div className={styles.filter_nome} >
-              <InputCommon  type="text" id='filter_nome' textLabel="Buscar nome" onchangeInputSet={setFiltroNome} />
+              <InputCommon  type="text" id='filter_nome' textLabel="Buscar nome" onchangeInputSet={setFiltroNome} placeholder="Buscar"/>
             </div>
             <div className={styles.filter_crm}>
-              <InputCommon  className={styles.filter_crm} type="text" id='filter_crm' textLabel="Buscar CRM" onchangeInputSet={setFiltroCrm} />
+              <InputCommon  className={styles.filter_crm} type="text" id='filter_crm' textLabel="Buscar CRM" onchangeInputSet={setFiltroCrm} placeholder="Buscar"/>
             </div>
             <div className={styles.pagination}>
               <SelectCommon id="pagination" defaultValue="10" textLabel="Itens por página" onchangeSet={""} options={optionsFilterPagination} />
