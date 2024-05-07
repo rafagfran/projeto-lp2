@@ -51,18 +51,18 @@ const CadastroMedico = () => {
     <section className={styles.cadastro_medico}>
       <div className={styles.cadastro_medico_container}>
         <div className={styles.form}>
-          <InputCommon id="nome" type="text" textLabel="Nome completo" textSpan="*" inputSet={setNome}/>
-          <InputCommon id="crm" type="text" textLabel="CRM" textSpan="*" inputSet={setCrm}/>
-          <InputCommon id="cpf" type="text" textLabel="CPF" textSpan="*" inputSet={setCpf}/>
-          <InputCommon id="idade" type="text" textLabel="Idade" textSpan="*" inputSet={setIdade}/>
-          <InputCommon id="dataNascimento" type="text" textLabel="Data de Nascimento" textSpan="*" inputSet={setDataNascimento}/>
-          <InputCommon id="sexo" type="text" textLabel="Sexo" textSpan="*" inputSet={setSexo}/>
-          <InputCommon id="email" type="text" textLabel="Email" textSpan="*" inputSet={setEmail}/>
-          <InputCommon id="telefone" type="text" textLabel="Telefone" textSpan="*" inputSet={setTelefone}/>
-          <InputCommon id="cidade" type="text" textLabel="Cidade" textSpan="*" inputSet={setCidade}/>
-          <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" inputSet={setCep}/>
-          <InputCommon id="numero" type="text" textLabel="Numero" textSpan="*" inputSet={setNumero}/>
-          <InputCommon id="status" type="text" textLabel="Status" textSpan="*" inputSet={setStatus}/>
+          <InputCommon id="nome" type="text" textLabel="Nome completo" textSpan="*" onchangeInputSet={setNome}/>
+          <InputCommon id="crm" type="text" textLabel="CRM" textSpan="*" onchangeInputSet={setCrm}/>
+          <InputCommon id="cpf" type="text" textLabel="CPF" textSpan="*" onchangeInputSet={setCpf}/>
+          <InputCommon id="idade" type="text" textLabel="Idade" textSpan="*" onchangeInputSet={setIdade}/>
+          <InputCommon id="dataNascimento" type="text" textLabel="Data de Nascimento" textSpan="*" onchangeInputSet={setDataNascimento}/>
+          <InputCommon id="sexo" type="text" textLabel="Sexo" textSpan="*" onchangeInputSet={setSexo}/>
+          <InputCommon id="email" type="text" textLabel="Email" textSpan="*" onchangeInputSet={setEmail}/>
+          <InputCommon id="telefone" type="text" textLabel="Telefone" textSpan="*" onchangeInputSet={setTelefone}/>
+          <InputCommon id="cidade" type="text" textLabel="Cidade" textSpan="*" onchangeInputSet={setCidade}/>
+          <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" onchangeInputSet={setCep}/>
+          <InputCommon id="numero" type="text" textLabel="Numero" textSpan="*" onchangeInputSet={setNumero}/>
+          <InputCommon id="status" type="text" textLabel="Status" textSpan="*" onchangeInputSet={setStatus}/>
         </div>
         <div className={styles.action}>
           <ButtonCommon text="Cadastrar" paddingButton="5px 10px" handleClick={() => handleSubmit()}/>

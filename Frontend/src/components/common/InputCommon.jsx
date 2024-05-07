@@ -1,6 +1,6 @@
 import React from 'react'
 
-const InputCommon = ({id, type, textLabel, textSpan, inputSet}) => {
+const InputCommon = ({id, type, textLabel, textSpan, onchangeInputSet}) => {
 
   const inputStyle = {
       display: 'flex',
@@ -14,7 +14,7 @@ const InputCommon = ({id, type, textLabel, textSpan, inputSet}) => {
   return (
     <div style={inputStyle}>
         <label htmlFor={id}>{textLabel}<span style={inputSpanStyle}>&nbsp;{textSpan}</span></label>
-        <input type={type} id={id} name={id} onChange={(e) => {inputSet(e.target.value)}}/>
+        <input type={type} id={id} name={id} onChange={(e) => {onchangeInputSet(e.target.value)}}/>
     </div>
   )
 }
