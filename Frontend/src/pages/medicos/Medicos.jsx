@@ -7,6 +7,7 @@ import styles from '../../styles/pages/medicos/Medicos.module.css';
 import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import InputCommon from '../../components/common/InputCommon.jsx';
 import SelectCommon from '../../components/common/SelectCommon.jsx';
+import TableCommon from '../../components/common/TableCommon.jsx';
 
 import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
@@ -32,6 +33,38 @@ const Medicos = () => {
     {value: 'ativo', text: 'Ativo'},
     {value: 'inativo', text: 'Inativo'},
   ]
+
+  const headerTableNames = [
+    {id: 'column_nome', name: 'Nome'},
+    {id: 'column_crm', name: 'CRM'},
+    {id: 'column_status', name: 'Status'},
+    {id: 'column_acoes', name: 'Ações'},
+  ]
+
+  const handleClickEdit = (id) => {
+    navigate(`editar/${id}`)
+    console.log(id)
+  }
+
+  const dataTableValues = dados.filter((item) => {
+      const filterByName = filtroNome.toLowerCase() === ''? item : item.nome.toLowerCase().includes(filtroNome)
+      const filterByStatus = filtroStatus === 'all' ? item : item.status === (filtroStatus === 'ativo' ? true : false)
+      const filterByCrm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
+      return filterByName && filterByStatus && filterByCrm
+    }).map((medico) => {
+    return {
+      column_nome: medico.nome,
+      column_crm: medico.crm,
+      column_status: medico.status ? "Ativo" : "Inativo",
+      column_acoes: (
+        <div id={styles.td_acoes}>
+          <button onClick={() => handleClickEdit(medico.id)}><img src={EditIcon} alt="" /></button>
+          <button><img src={DeleteIcon} alt="" /></button>
+      </div>
+      )
+    }
+   })
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,35 +103,7 @@ const Medicos = () => {
             </div>
           </div>
           <div className={styles.table}>
-            <table>
-              <thead>
-                <tr>
-                  <th id={styles.th_nome}>Nome</th>
-                  <th id={styles.th_crm}>crm</th>
-                  <th id={styles.th_status}>Status</th>
-                  <th id={styles.th_acoes}>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dados.filter((item) => {
-                  const filterByName = filtroNome.toLowerCase() === ''? item : item.nome.toLowerCase().includes(filtroNome)
-                  const filterByStatus = filtroStatus === 'all' ? item : item.status === (filtroStatus === 'ativo' ? true : false)
-                  const filterByCrm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
-
-                  return filterByName && filterByStatus && filterByCrm
-                }).map(medico => (
-                  <tr key={medico.id}>
-                    <td id={styles.td_nome}>{medico.nome}</td>
-                    <td id={styles.td_crm}>{medico.crm}</td>
-                    <td id={styles.td_status}>{medico.status ? "Ativo" : "Inativo"}</td>
-                    <td id={styles.td_acoes}>
-                        <button><img src={EditIcon} alt="" /></button>
-                        <button><img src={DeleteIcon} alt="" /></button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <TableCommon columns={headerTableNames} data={dataTableValues}/>
           </div>
         </div>
     </section>

@@ -51,71 +51,27 @@
 }
 
 
-.search > input{ 
-    width: 100%;
-    border: 1px solid rgb(153, 151, 151);
-}
-
-.table{
-    display: flex;
-    flex-direction: column;
-    
-}
-
-.table > table{
-    border-collapse: collapse;
-    width: 100%;
-}
-
-.table > table > thead{
-    background: rgb(44, 44, 44);
-    color: white;
-    
-    
-}
-
-.table > table > thead > tr > th{
-    text-align: start;
-    padding-left: 10px;
-}
-
-
-.table > table > thead > tr > #th_status,
-.table > table > thead > tr > #th_acoes{
-    text-align: center;
-    
-}
-
-.table > table > tbody > tr > #td_status,
-.table > table > tbody > tr > #td_acoes{
-   text-align: center;
-}
-
-.table > table > tbody > tr > #td_acoes{
+#td_acoes{
     display: flex;
     gap: 20px;
     justify-content: center;
 }
 
-.table > table > tbody > tr > #td_acoes > button{
+#td_acoes > button{
     background: none;
     border: none;
+    cursor: pointer;
     
 }
 
-.table > table > tbody > tr > #td_acoes > button > img{
+#td_acoes > button > img{
     width: 25px;
     height: 25px;
 
 }
 
-.table > table > tbody > tr {
-    border-bottom: 1px solid rgb(170, 170, 170);
-    
-}
 
-.table > table > tbody > tr > td{
-    padding: 10px 0 10px 10px;
-}
+
+
 
 

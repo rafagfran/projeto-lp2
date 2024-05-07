@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios';
 
 export default class MedicosCrud{
+
     
     #urlGetAll  = 'http://localhost:8080/api/v1/doctor/getAll';
     #urlCreate = 'http://localhost:8080/api/v1/doctor/create';
@@ -23,9 +24,9 @@ export default class MedicosCrud{
         }
     }
 
-    async update(id){
+    async update(data){
         try {
-            const response = await axios.put(`${this.#urlUpdate}/${id}`)
+            const response = await axios.put(`${this.#urlUpdate}`, data)
             return response.status
         } catch (error) {
             throw error;   
@@ -53,7 +54,7 @@ export default class MedicosCrud{
 
     async getById(id){
         try {
-            const response = await axios.get(`${this.#urlGetById}/${id}`)
+            const response = await axios.get(`${this.#urlGetById}?id=${id}`) // Passar o ID como query string
             return response.data
         } catch (error) {
             throw error;
