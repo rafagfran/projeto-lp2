@@ -21,6 +21,7 @@ const Medicos = () => {
   const [filtroNome, setFiltroNome] = useState('')
   const [filtroStatus, setFiltroStatus] = useState('all')
   const [filtroCrm, setFiltroCrm] = useState('')
+  const [pagination, setPagination] = useState(10)
 
   const optionsFilterPagination = [
     {value: 10, text: 10},
@@ -85,14 +86,14 @@ const Medicos = () => {
     const fetchData = async () => {
       try {
         const medicosCrud = new MedicosCrud()
-        const response = await medicosCrud.getAll()
+        const response = await medicosCrud.list(0, pagination)
         setDados(response)
       } catch (error) {
         console.error('Erro ao recuperar os dados:', error);
       }
     }
     fetchData();
-  }, [])
+  }, [pagination])
 
   return (
     <section className={styles.medicos}>
@@ -111,7 +112,7 @@ const Medicos = () => {
               <InputCommon  className={styles.filter_crm} type="text" id='filter_crm' textLabel="Buscar CRM" onchangeInputSet={setFiltroCrm} placeholder="Buscar"/>
             </div>
             <div className={styles.pagination}>
-              <SelectCommon id="pagination" defaultValue="10" textLabel="Itens por página" onchangeSet={""} options={optionsFilterPagination} />
+              <SelectCommon id="pagination" defaultValue="10" textLabel="Itens por página" onchangeSet={setPagination} options={optionsFilterPagination} />
             </div>
             <div className={styles.filter_status}>
               <SelectCommon id="filter_status" defaultValue="all" textLabel="Status" onchangeSet={setFiltroStatus} options={optionsFilterStatus} />

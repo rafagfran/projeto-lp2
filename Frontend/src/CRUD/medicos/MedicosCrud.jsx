@@ -64,15 +64,16 @@ export default class MedicosCrud{
     async getByName(name){
         try {
             const response = await axios.get(`${this.#urlGetByName}/${name}`)
-            return response.data
+            return response
         } catch (error) {
             throw error;
         }
     }
 
     async delete(id){
+        const idMedico = {id: id}
         try {
-            const response = await axios.delete(`${this.#urlDelete}`, id)
+            const response = await axios.delete(`${this.#urlDelete}?id=${id}`)
             return response.data
         } catch (error) {
             throw error;   
@@ -81,8 +82,8 @@ export default class MedicosCrud{
 
     async list(pageNumber, pageSize){
         try {
-            const response = await axios.get(`${this.#urlList}/${pageNumber}/${pageSize}`)
-            return response.data
+            const response = await axios.get(`${this.#urlList}?pageNumber=${pageNumber}&pageSize=${pageSize}`)
+            return response.data.content
         } catch (error) {
             throw error;
         }

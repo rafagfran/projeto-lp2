@@ -5,8 +5,11 @@ import ButtonCommon from '../../components/common/ButtonCommon.jsx'
 import { useParams } from 'react-router-dom'
 import MedicosCrud from '../../CRUD/medicos/MedicosCrud.jsx'
 import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom' 
 
 const EditarMedico = () => {
+    const navigate = useNavigate()
+
     const { id } = useParams()
     const [nome, setNome] = React.useState('')
     const [crm, setCrm] = React.useState('')
@@ -68,6 +71,7 @@ const EditarMedico = () => {
 
           if(response === 200){
             alert('Médico atualizado com sucesso')
+            navigate('/home/medicos')
           }
         } catch (error) {
           console.log(error)
