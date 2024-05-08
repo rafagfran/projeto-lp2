@@ -71,7 +71,6 @@ export default class MedicosCrud{
     }
 
     async delete(id){
-        const idMedico = {id: id}
         try {
             const response = await axios.delete(`${this.#urlDelete}?id=${id}`)
             return response.data

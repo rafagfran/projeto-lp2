@@ -22,18 +22,60 @@
     padding: 5px 0 10px 10px;
 }
 
-.action_pagination{
-    margin-top: 10px;
+.pagination{
+    margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 10px; 
 }
 
-.action_pagination > button{
-    padding: 5px 10px;
+.pagination button{
+    padding: 5px;
     border: none;
-    color: rgb(0, 0, 0);
     cursor: pointer;
+    height: 20px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pagination .action{
+    display: flex;
+    gap: 5px;
+}
+.pagination .action button{
+    background-color: #040442;
+    border-radius: 5px;
+}
+
+.pagination .action button > img{
+    height: 12px;
+    width: 12px;
+}
+
+.numero_pagina{
+    display: flex;
+    align-self: center;
+    gap: 5px;
+}
+
+.numero_pagina button{
+    min-width: 20px;
     background: none;
 }
+
+.numero_pagina .pagina_atual{
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+
+.action_pagination .pagina_posterior,
+.action_pagination .pagina_anterior{
+    font-size: 1rem;
+    font-weight: 400;
+}
+

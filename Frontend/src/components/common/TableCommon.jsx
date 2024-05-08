@@ -1,21 +1,69 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from '../../styles/components/common/TableCommon.module.css'
-import { useParams } from 'react-router-dom'
-import { useState } from 'react'
+import voltarIcon from '../../assets/voltar-white-icon.png'
+import avancarIcon from '../../assets/avancar-white-icon.png'
+import doubleLeftIcon from '../../assets/double-left-icon.png'
+import doubleRightIcon from '../../assets/double-right-icon.png'
 
-const TableCommon = ({columns, data}) => {
-  
+const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNumber, onFirstPage, onLastPage}) => {
+
+  const paginaAtual = pageNumber + 1;
+  const ultimaPagina = totalPages
 
   const styleColumns = {
     textAlign: 'center',
-  }
+}
 
   const handleClickPageLeft = () => {
-    pageNumber
-  }
+    onPageLeft(); 
+  };
 
   const handleClickPageRight = () => {
+    onPageRight();
+   
+  };
+
+  const handleClickFirstPage = () => {
+    onFirstPage();
   }
+
+  const handleClickLastPage = () => {
+    onLastPage();
+  }
+
+  useEffect(() => {
+    const btnFirst = document.getElementById('btn-first');
+    const btnLast = document.getElementById('btn-last');
+    const btnPageLeft = document.getElementById('btn-page-left');
+    const btnPageRight = document.getElementById('btn-page-right');
+    const paginaAnterior = document.getElementById('pagina_anterior');
+    const paginaPosterior = document.getElementById('pagina_posterior');
+
+    if(paginaAtual === 1){
+      btnFirst.disabled = true;
+      btnPageLeft.disabled = true;
+      paginaAnterior.style.visibility = 'hidden';
+      paginaAnterior.disabled = true;
+    }else{
+      btnFirst.disabled = false;
+      btnPageLeft.disabled = false;     
+      paginaAnterior.disabled = false;
+      paginaAnterior.style.visibility = 'visible';
+    }
+
+    if(paginaAtual === ultimaPagina){
+      btnLast.disabled = true;
+      btnPageRight.disabled = true;
+      paginaPosterior.style.visibility = 'hidden';
+      paginaPosterior.disabled = true;
+    }else{
+      btnLast.disabled = false;
+      btnPageRight.disabled = false;
+      paginaPosterior.style.visibility = 'visible';
+      paginaPosterior.disabled = false;
+    }
+
+  }, [paginaAtual])
 
   return (
     <>
@@ -65,41 +113,25 @@ const TableCommon = ({columns, data}) => {
                 ))}
             </tbody>
         </table>
-        <div className={styles.action_pagination}>
-          <button onClick={handleClickPageLeft}>Anterior</button>
-          <button onClick={handleClickPageRight}>Próximo</button>
+        <div className={styles.pagination}>
+          <div className={styles.action}>
+            <button className={styles.btn_first} id="btn-first" onClick={handleClickFirstPage}><img src={doubleLeftIcon} alt="" /></button>
+            <button className={styles.btn_left} id="btn-page-left" onClick={handleClickPageLeft}><img src={voltarIcon} alt="" /></button>
+          </div>
+          <div className={styles.numero_pagina}>
+            <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual - 1}</button>
+            <button id='pagina_atual' className={styles.pagina_atual}>{paginaAtual}</button>
+            <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
+          </div>
+          <div className={styles.action}>
+            <button className={styles.btn_right} id="btn-page-right" onClick={handleClickPageRight}><img src={avancarIcon} alt="" /></button>
+            <button className={styles.btn_last}  id="btn-last" onClick={handleClickLastPage}><img src={doubleRightIcon} alt="" /></button>
+          </div>
+          
         </div>
+        <span>Página {paginaAtual} de {ultimaPagina}</span>
     </>
   )
 }
 
 export default TableCommon
-{/* <table>
-<thead>
-  <tr>
-    <th id={styles.th_nome}>Nome</th>
-    <th id={styles.th_crm}>crm</th>
-    <th id={styles.th_status}>Status</th>
-    <th id={styles.th_acoes}>Ações</th>
-  </tr>
-</thead>
-<tbody>
-  {dados.filter((item) => {
-    const filterByName = filtroNome.toLowerCase() === ''? item : item.nome.toLowerCase().includes(filtroNome)
-    const filterByStatus = filtroStatus === 'all' ? item : item.status === (filtroStatus === 'ativo' ? true : false)
-    const filterByCrm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
-
-    return filterByName && filterByStatus && filterByCrm
-  }).map(medico => (
-    <tr key={medico.id}>
-      <td id={styles.td_nome}>{medico.nome}</td>
-      <td id={styles.td_crm}>{medico.crm}</td>
-      <td id={styles.td_status}>{medico.status ? "Ativo" : "Inativo"}</td>
-      <td id={styles.td_acoes}>
-          <button><img src={EditIcon} alt="" /></button>
-          <button><img src={DeleteIcon} alt="" /></button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-</table> */}

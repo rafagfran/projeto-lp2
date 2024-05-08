@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import styles from '../../styles/pages/medicos/Medicos.module.css';
@@ -21,9 +21,12 @@ const Medicos = () => {
   const [filtroNome, setFiltroNome] = useState('')
   const [filtroStatus, setFiltroStatus] = useState('all')
   const [filtroCrm, setFiltroCrm] = useState('')
-  const [pagination, setPagination] = useState(10)
+  const [pageNumber, setPageNumber] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
+  const [totalPages, setTotalPages] = useState(0)
 
-  const optionsFilterPagination = [
+
+  const optionsFilter = [
     {value: 10, text: 10},
     {value: 20, text: 20},
     {value: 50, text: 50},
@@ -68,6 +71,7 @@ const Medicos = () => {
       const filterByCrm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
       return filterByName && filterByStatus && filterByCrm
     }).map((medico) => {
+      
     return {
       column_nome: medico.nome,
       column_crm: medico.crm,
@@ -80,20 +84,42 @@ const Medicos = () => {
       )
     }
    })
-  
+
+
+   const handlePageLeft = () => {
+    if (pageNumber === 0) return;
+    setPageNumber(pageNumber - 1); 
+  };
+
+  const handlePageRight = () => {
+    if (pageNumber === totalPages - 1 ) return;
+    setPageNumber(pageNumber + 1);
+  };
+
+  const handleFirstPage = () => {
+    setPageNumber(0);
+  }
+
+  const handleLastPage = () => {
+    setPageNumber(totalPages-1);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const medicosCrud = new MedicosCrud()
-        const response = await medicosCrud.list(0, pagination)
+        const response = await medicosCrud.list(pageNumber, pageSize)
         setDados(response)
+
+        const allData = await medicosCrud.getAll()
+        const total = Math.ceil(allData.length / pageSize)
+        setTotalPages(total)
       } catch (error) {
         console.error('Erro ao recuperar os dados:', error);
       }
     }
     fetchData();
-  }, [pagination])
+  }, [pageNumber, pageSize])
 
   return (
     <section className={styles.medicos}>
@@ -112,14 +138,15 @@ const Medicos = () => {
               <InputCommon  className={styles.filter_crm} type="text" id='filter_crm' textLabel="Buscar CRM" onchangeInputSet={setFiltroCrm} placeholder="Buscar"/>
             </div>
             <div className={styles.pagination}>
-              <SelectCommon id="pagination" defaultValue="10" textLabel="Itens por página" onchangeSet={setPagination} options={optionsFilterPagination} />
+              <SelectCommon id="" defaultValue="10" textLabel="Itens por página" onchangeSet={setPageSize} options={optionsFilter} />
             </div>
             <div className={styles.filter_status}>
               <SelectCommon id="filter_status" defaultValue="all" textLabel="Status" onchangeSet={setFiltroStatus} options={optionsFilterStatus} />
             </div>
           </div>
           <div className={styles.table}>
-            <TableCommon columns={headerTableNames} data={dataTableValues}/>
+            <TableCommon columns={headerTableNames} data={dataTableValues}onPageLeft={handlePageLeft}
+            onPageRight={handlePageRight} totalPages={totalPages} pageNumber={pageNumber} onFirstPage={handleFirstPage} onLastPage={handleLastPage}/>
           </div>
         </div>
     </section>
