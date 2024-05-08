@@ -5,7 +5,7 @@ import avancarIcon from '../../assets/avancar-white-icon.png'
 import doubleLeftIcon from '../../assets/double-left-icon.png'
 import doubleRightIcon from '../../assets/double-right-icon.png'
 
-const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNumber, onFirstPage, onLastPage}) => {
+const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNumber, onFirstPage, onLastPage, pageSize}) => {
 
   const paginaAtual = pageNumber + 1;
   const ultimaPagina = totalPages
@@ -30,6 +30,10 @@ const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNu
   const handleClickLastPage = () => {
     onLastPage();
   }
+
+  useEffect(() => {
+    onFirstPage();
+  }, [pageSize])
 
   useEffect(() => {
     const btnFirst = document.getElementById('btn-first');
@@ -63,7 +67,7 @@ const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNu
       paginaPosterior.disabled = false;
     }
 
-  }, [paginaAtual])
+  }, [paginaAtual, totalPages])
 
   return (
     <>
