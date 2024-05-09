@@ -3,7 +3,7 @@ import styles from '../../styles/pages/medicos/EditarMedico.module.css'
 import InputCommon from '../../components/common/InputCommon.jsx'
 import ButtonCommon from '../../components/common/ButtonCommon.jsx'
 import { useParams } from 'react-router-dom'
-import MedicosCrud from '../../CRUD/medicos/MedicosCrud.jsx'
+import MedicosCrud from '../../CRUD/MedicosCrud.jsx'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom' 
 

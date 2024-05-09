@@ -20,6 +20,15 @@ const Sidebar = () => {
             <li>
               <Link to="/home/medicos"><img src={medicoIcon} alt="icon-medico" />Medicos</Link>
             </li>
+            <li>
+              <Link to="/home/pacientes"><img src={medicoIcon} alt="icon-medico" />Pacientes</Link>
+            </li>
+            <li>
+              <Link to="/home/agendamentos"><img src={medicoIcon} alt="icon-medico" />Agendamentos</Link>
+            </li>
+            <li>
+              <Link to="/home/internacoes"><img src={medicoIcon} alt="icon-medico" />Internações</Link>
+            </li>
           </ul>
         </nav>
       </div>

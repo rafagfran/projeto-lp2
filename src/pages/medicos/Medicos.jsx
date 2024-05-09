@@ -12,7 +12,7 @@ import TableCommon from '../../components/common/TableCommon.jsx';
 import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
 
-import MedicosCrud from '../../CRUD/medicos/MedicosCrud.jsx';
+import MedicosCrud from '../../CRUD/MedicosCrud.jsx';
 
 const Medicos = () => {
   const navigate = useNavigate()
