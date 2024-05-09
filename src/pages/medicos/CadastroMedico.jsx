@@ -20,6 +20,23 @@ const CadastroMedico = () => {
 
   const handleSubmit = async () => {
       const url = 'http://localhost:8080/api/v1/doctor/create'
+
+      if(nome === '' || crm === '' || cpf === '' || idade === 0 || dataNascimento === '' || sexo === '' || email === '' || telefone === '' || cidade === '' || cep === '' || numero === '' || status === '  '){
+        alert('Preencha todos os campos!')
+        return
+      }
+
+      if(isNaN(idade)){
+        alert('Idade deve ser um número!')
+        return
+      }
+
+      if(status !== 'true' && status !== 'false'){
+        alert('Status deve ser true ou false!')
+        return
+      }
+
+
       const dataNewUser = {
         nome: nome, //String
         crm: crm, //String
@@ -32,7 +49,6 @@ const CadastroMedico = () => {
         cidade: cidade,//String
         cep: cep,//String
         numero: numero,//String
-        status: Boolean(status)//Boolean
       }
 
       try {
@@ -53,16 +69,15 @@ const CadastroMedico = () => {
         <div className={styles.form}>
           <InputCommon id="nome" type="text" textLabel="Nome completo" textSpan="*" onchangeInputSet={setNome}/>
           <InputCommon id="crm" type="text" textLabel="CRM" textSpan="*" onchangeInputSet={setCrm}/>
-          <InputCommon id="cpf" type="text" textLabel="CPF" textSpan="*" onchangeInputSet={setCpf}/>
+          <InputCommon id="cpf" type="text" textLabel="CPF" textSpan="*" onchangeInputSet={setCpf} maxLength={11}/>
           <InputCommon id="idade" type="text" textLabel="Idade" textSpan="*" onchangeInputSet={setIdade}/>
           <InputCommon id="dataNascimento" type="text" textLabel="Data de Nascimento" textSpan="*" onchangeInputSet={setDataNascimento}/>
           <InputCommon id="sexo" type="text" textLabel="Sexo" textSpan="*" onchangeInputSet={setSexo}/>
           <InputCommon id="email" type="text" textLabel="Email" textSpan="*" onchangeInputSet={setEmail}/>
           <InputCommon id="telefone" type="text" textLabel="Telefone" textSpan="*" onchangeInputSet={setTelefone}/>
           <InputCommon id="cidade" type="text" textLabel="Cidade" textSpan="*" onchangeInputSet={setCidade}/>
-          <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" onchangeInputSet={setCep}/>
+          <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" onchangeInputSet={setCep} maxLength={9}/>
           <InputCommon id="numero" type="text" textLabel="Numero" textSpan="*" onchangeInputSet={setNumero}/>
-          <InputCommon id="status" type="text" textLabel="Status" textSpan="*" onchangeInputSet={setStatus}/>
         </div>
         <div className={styles.action}>
           <ButtonCommon text="Cadastrar" paddingButton="5px 10px" handleClick={() => handleSubmit()}/>
