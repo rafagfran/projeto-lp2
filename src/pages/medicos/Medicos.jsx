@@ -146,7 +146,7 @@ const Medicos = () => {
           </div>
           <div className={styles.table}>
             <TableCommon columns={headerTableNames} data={dataTableValues}onPageLeft={handlePageLeft}
-            onPageRight={handlePageRight} totalPages={totalPages} pageNumber={pageNumber} onFirstPage={handleFirstPage} onLastPage={handleLastPage}/>
+            onPageRight={handlePageRight} totalPages={totalPages} pageNumber={pageNumber} onFirstPage={handleFirstPage} onLastPage={handleLastPage} pageSize={pageSize}/>
           </div>
         </div>
     </section>
