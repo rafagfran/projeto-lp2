@@ -4,6 +4,9 @@ import Style from '../../../styles/components/layout/sidebar/Sidebar.module.css'
 
 import homeIcon from '../../../assets/home-icon.png'
 import medicoIcon from '../../../assets/medico-icon.png'
+import pacienteIcon from '../../../assets/paciente-icon.png'
+import agendamentoIcon from '../../../assets/agendamento-icon.png'
+import internacaoIcon from '../../../assets/internacao-icon.png'
 
 const Sidebar = () => {
   return (
@@ -21,13 +24,13 @@ const Sidebar = () => {
               <Link to="/home/medicos"><img src={medicoIcon} alt="icon-medico" />Medicos</Link>
             </li>
             <li>
-              <Link to="/home/pacientes"><img src={medicoIcon} alt="icon-medico" />Pacientes</Link>
+              <Link to="/home/pacientes"><img src={pacienteIcon} alt="icon-medico" />Pacientes</Link>
             </li>
             <li>
-              <Link to="/home/agendamentos"><img src={medicoIcon} alt="icon-medico" />Agendamentos</Link>
+              <Link to="/home/agendamentos"><img src={agendamentoIcon} alt="icon-medico" />Agendamentos</Link>
             </li>
             <li>
-              <Link to="/home/internacoes"><img src={medicoIcon} alt="icon-medico" />Internações</Link>
+              <Link to="/home/internacoes"><img src={internacaoIcon} alt="icon-medico" />Internações</Link>
             </li>
           </ul>
         </nav>
