@@ -1,14 +1,19 @@
 .table{
     border-collapse: collapse;
-    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
 }
 
 .thead{
     background: #040442;
     color: white;
+    display: flex;
 }
 
 .th{
+    
     padding: 3px 0;
     text-align: start;
     padding-left: 10px;

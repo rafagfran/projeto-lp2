@@ -2,14 +2,14 @@ import React from 'react'
 import axios from 'axios';
 
 export default class AgendamentosCrud {
-    #urlGetAll  = 'http://localhost:8080/api/v1/patient/getAll';
-    #urlCreate = 'http://localhost:8080/api/v1/patient/create';
-    #urlUpdate = 'http://localhost:8080/api/v1/patient/update';
-    #urlGetByCpf = 'http://localhost:8080/api/v1/patient/getByCpf';
-    #urlDelete = 'http://localhost:8080/api/v1/patient/delete';
-    #urlList = 'http://localhost:8080/api/v1/patient/list';
-    #urlGetById = 'http://localhost:8080/api/v1/patient/getById';
-    #urlGetByName = 'http://localhost:8080/api/v1/patient/getByName';
+    #urlGetAll  = 'http://localhost:8080/api/v1/appointment/getAll';
+    #urlCreate = 'http://localhost:8080/api/v1/appointment/create';
+    #urlUpdate = 'http://localhost:8080/api/v1/appointment/update';
+    #urlGetByCpf = 'http://localhost:8080/api/v1/appointment/getByCpf';
+    #urlDelete = 'http://localhost:8080/api/v1/appointment/delete';
+    #urlList = 'http://localhost:8080/api/v1/appointment/list';
+    #urlGetById = 'http://localhost:8080/api/v1/appointment/getById';
+    #urlGetByName = 'http://localhost:8080/api/v1/appointment/getByName';
 
 
     async create(data){

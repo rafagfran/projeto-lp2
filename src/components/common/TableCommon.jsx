@@ -14,6 +14,8 @@ const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNu
     textAlign: 'center',
 }
 
+ 
+
   const handleClickPageLeft = () => {
     onPageLeft(); 
   };

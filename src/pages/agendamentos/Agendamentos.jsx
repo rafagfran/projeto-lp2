@@ -23,19 +23,22 @@ const Agendamentos = () => {
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
 
-
   const optionsFilter = [
     {value: 10, text: 10},
     {value: 20, text: 20},
     {value: 50, text: 50},
   ]
 
-
   const headerTableNames = [
-    {id: 'column_nome', name: 'Nome'},
-    {id: 'column_cpf', name: 'CPF'},
-    {id: 'column_sexo', name: 'Sexo'},
-    {id: 'column_telefone', name: 'Telefone'},
+    {id: 'column_tipo_consulta', name: 'Tipo de consulta', width: '200px' },
+    {id: 'column_data_consulta', name: 'Data da consulta', width: '200px'},
+    {id: 'column_medico_nome', name: 'Médico'},
+    {id: 'column_paciente_nome', name: 'Paciente'},
+    {id: 'column_paciente_idade', name: 'Idade do paciente'},
+    {id: 'column_paciente_telefone', name: 'Telefone do paciente'},
+    {id: 'column_paciente_email', name: 'Email do paciente'},
+    {id: 'column_paciente_sexo', name: 'Sexo do paciente'},
+    {id: 'column_paciente_cpf', name: 'CPF do paciente'},
     {id: 'column_acoes', name: 'Ações'},
   ]
 
@@ -59,16 +62,17 @@ const Agendamentos = () => {
        
   }
 
-  const dataTableValues = dados.filter((item) => {
-      const filterByName = filtroNome.toLowerCase() === ''? item : item.nome.toLowerCase().includes(filtroNome)
-      const filterByCpf = filtroCpf.toLowerCase() === '' ? item : item.cpf.toLowerCase().includes(filtroCpf)
-      return filterByName  && filterByCpf
-    }).map((agendamento) => {
+  const dataTableValues = dados.map((agendamento) => {
     return {
-      column_nome: agendamento.nome,
-      column_cpf: agendamento.cpf,
-      column_sexo: agendamento.pessoa.sexo,
-      column_telefone: agendamento.pessoa.telefone,
+      column_tipo_consulta: agendamento.tipoConsulta,
+      column_data_consulta: agendamento.dataHora,
+      column_medico_nome: agendamento.medico.nome,
+      column_paciente_nome: agendamento.paciente.nome,
+      column_paciente_idade: agendamento.paciente.pessoa.idade, 
+      column_paciente_telefone: agendamento.paciente.pessoa.telefone,
+      column_paciente_email: agendamento.paciente.email,
+      column_paciente_sexo: agendamento.paciente.pessoa.sexo,
+      column_paciente_cpf: agendamento.paciente.cpf,
       column_acoes: (
         <div id={styles.td_acoes}>
           <button onClick={() => handleClickEdit(agendamento.id)}><img src={EditIcon} alt="" /></button>
@@ -119,16 +123,6 @@ const Agendamentos = () => {
           <h2>Registro de agendamentos</h2>
         </header>
         <div className={styles.body}>
-          <div className={styles.resume_container}>
-            <div className={styles.total_agendamentos}>
-              <span>Total de agendamentos:</span>
-              <span className={styles.total_data}>{dados.length}</span>
-            </div>
-            <div className={styles.agendamentos_diarios}>
-              <span>Agendamentos para hoje:</span>
-              <span className={styles.total_data}>15</span>  
-            </div>
-          </div>
           <div className={styles.add}>
             <ButtonCommon text="+ Add" paddingButton="5px 15px" handleClick={() => navigate("cadastro")}/>
           </div>
