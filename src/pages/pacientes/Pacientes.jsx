@@ -26,8 +26,8 @@ const Pacientes = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
-  const [paginaAtual, setPaginaAtual] = useState(1)
-  const [ultimaPagina, setUltimaPagina] = useState(1)
+  const paginaAtual = pageNumber + 1
+  const ultimaPagina = totalPages
 
 
   const optionsFilter = [
@@ -62,17 +62,15 @@ const Pacientes = () => {
     } else {
       // Código para cancelar a exclusão
     }
-       
   }
 
-
-   const handlePageLeft = () => {
+  const handlePageLeft = () => {
     if (pageNumber === 0) return;
     setPageNumber(pageNumber - 1); 
   };
 
   const handlePageRight = () => {
-    if (pageNumber === totalPages - 1 ) return;
+    if (pageNumber === ultimaPagina ) return;
     setPageNumber(pageNumber + 1);
   };
 
@@ -81,7 +79,7 @@ const Pacientes = () => {
   }
 
   const handleLastPage = () => {
-    setPageNumber(totalPages-1);
+    setPageNumber(ultimaPagina);
   }
 
   useEffect(() => {
@@ -188,8 +186,8 @@ const Pacientes = () => {
         </table>
         <div className={styles.pagination_action}>
           <div className={styles.action}>
-            <button className={styles.btn_first} id="btn-first" onClick={""}><img src={doubleLeftIcon} alt="" /></button>
-            <button className={styles.btn_left} id="btn-page-left" onClick={""}><img src={voltarIcon} alt="" /></button>
+            <button className={styles.btn_first} id="btn-first" onClick={handleFirstPage}><img src={doubleLeftIcon} alt="" /></button>
+            <button className={styles.btn_left} id="btn-page-left" onClick={handlePageLeft}><img src={voltarIcon} alt="" /></button>
           </div>
           <div className={styles.numero_pagina}>
             <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual - 1}</button>
@@ -197,8 +195,8 @@ const Pacientes = () => {
             <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
           </div>
           <div className={styles.action}>
-            <button className={styles.btn_right} id="btn-page-right" onClick={""}><img src={avancarIcon} alt="" /></button>
-            <button className={styles.btn_last}  id="btn-last" onClick={""}><img src={doubleRightIcon} alt="" /></button>
+            <button className={styles.btn_right} id="btn-page-right" onClick={handlePageRight}><img src={avancarIcon} alt="" /></button>
+            <button className={styles.btn_last}  id="btn-last" onClick={handleLastPage  }><img src={doubleRightIcon} alt="" /></button>
           </div>
           
         </div>

@@ -27,8 +27,8 @@ const Agendamentos = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
-  const [paginaAtual, setPaginaAtual] = useState(1)
-  const [ultimaPagina, setUltimaPagina] = useState(1)
+  const paginaAtual = pageNumber + 1
+  const ultimaPagina = totalPages
 
   useEffect(() => {
     const btnFirst = document.getElementById('btn-first');
@@ -89,56 +89,42 @@ const Agendamentos = () => {
     {value: 50, text: 50},
   ]
 
-  // const handleClickEdit = (id) => {
-  //   navigate(`editar/${id}`)
-  //   console.log(id)
-  // }
+  const handleClickEdit = (id) => {
+    navigate(`editar/${id}`)
+    console.log(id)
+  }
 
-  // const handleClickDelete = async (id) => {
-  //   if (confirm("Você deseja realmente excluir este item?")) {
-  //     const agendamentosCrud = new AgendamentosCrud()
-  //     try {
-  //       const response = await agendamentosCrud.delete(id)
-  //       alert(response.data)
-  //     } catch (error) {
-  //       console.error("Error deleting:", error);
-  //     }
-  //   } else {
-  //     // Código para cancelar a exclusão
-  //   }
-       
-  // }
+  const handleClickDelete = async (id) => {
+    if (confirm("Você deseja realmente excluir este item?")) {
+      const agendamentosCrud = new AgendamentosCrud()
+      try {
+        const response = await agendamentosCrud.delete(id)
+        alert(response.data)
+      } catch (error) {
+        console.error("Error deleting:", error);
+      }
+    } else {
+      // Código para cancelar a exclusão
+    }
+  }
 
-  // const dataTableValues = dados.map((agendamento) => {
-  //   return {
-  
-  //     column_acoes: (
-  //       <div id={styles.td_acoes}>
-  //         <button onClick={() => handleClickEdit(agendamento.id)}><img src={EditIcon} alt="" /></button>
-  //         <button onClick={() => handleClickDelete(agendamento.id)}><img src={DeleteIcon} alt="" /></button>
-  //     </div>
-  //     )
-  //   } 
-  //  })
+  const handlePageLeft = () => {
+    if (pageNumber === 0) return;
+    setPageNumber(pageNumber - 1); 
+  };
 
-  //  const handlePageLeft = () => {
-  //   if (pageNumber === 0) return;
-  //   setPageNumber(pageNumber - 1); 
-  // };
+  const handlePageRight = () => {
+    if (pageNumber === ultimaPagina ) return;
+    setPageNumber(pageNumber + 1);
+  };
 
-  // const handlePageRight = () => {
-  //   if (pageNumber === totalPages - 1 ) return;
-  //   setPageNumber(pageNumber + 1);
-  // };
+  const handleFirstPage = () => {
+    setPageNumber(0);
+  }
 
-  // const handleFirstPage = () => {
-  //   setPageNumber(0);
-  // }
-
-  // const handleLastPage = () => {
-  //   setPageNumber(totalPages-1);
-  // }
-
+  const handleLastPage = () => {
+    setPageNumber(ultimaPagina);
+  }
  
 
   return (
@@ -189,8 +175,8 @@ const Agendamentos = () => {
             </table>
             <div className={styles.pagination_action}>
               <div className={styles.action}>
-                <button className={styles.btn_first} id="btn-first" onClick={""}><img src={doubleLeftIcon} alt="" /></button>
-                <button className={styles.btn_left} id="btn-page-left" onClick={""}><img src={voltarIcon} alt="" /></button>
+                <button className={styles.btn_first} id="btn-first" onClick={handleFirstPage}><img src={doubleLeftIcon} alt="" /></button>
+                <button className={styles.btn_left} id="btn-page-left" onClick={handlePageLeft}><img src={voltarIcon} alt="" /></button>
               </div>
               <div className={styles.numero_pagina}>
                 <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual - 1}</button>
@@ -198,8 +184,8 @@ const Agendamentos = () => {
                 <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
               </div>
               <div className={styles.action}>
-                <button className={styles.btn_right} id="btn-page-right" onClick={""}><img src={avancarIcon} alt="" /></button>
-                <button className={styles.btn_last}  id="btn-last" onClick={""}><img src={doubleRightIcon} alt="" /></button>
+                <button className={styles.btn_right} id="btn-page-right" onClick={{handlePageRight}}><img src={avancarIcon} alt="" /></button>
+                <button className={styles.btn_last}  id="btn-last" onClick={{handleLastPage}}><img src={doubleRightIcon} alt="" /></button>
               </div>
               
             </div>
