@@ -13,7 +13,7 @@ const EditarPaciente = () => {
     const { id } = useParams()
     const [nome, setNome] = React.useState('')
     const [cpf, setCpf] = React.useState('')
-    const [idade, setIdade] = React.useState(0)
+    const [idade, setIdade] = React.useState("")
     const [dataNascimento, setDataNascimento] = React.useState('')
     const [sexo, setSexo] = React.useState('')
     const [email, setEmail] = React.useState('')
