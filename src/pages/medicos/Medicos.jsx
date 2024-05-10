@@ -6,7 +6,10 @@ import styles from '../../styles/pages/medicos/Medicos.module.css';
 import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import InputCommon from '../../components/common/InputCommon.jsx';
 import SelectCommon from '../../components/common/SelectCommon.jsx';
-import TableCommon from '../../components/common/TableCommon.jsx';
+import voltarIcon from '../../assets/voltar-white-icon.png'
+import avancarIcon from '../../assets/avancar-white-icon.png'
+import doubleLeftIcon from '../../assets/double-left-icon.png'
+import doubleRightIcon from '../../assets/double-right-icon.png'
 
 import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
@@ -24,6 +27,9 @@ const Medicos = () => {
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
 
+  const paginaAtual = pageNumber + 1
+  const ultimaPagina = totalPages
+
 
   const optionsFilter = [
     {value: 10, text: 10},
@@ -35,13 +41,6 @@ const Medicos = () => {
     {value: 'all', text: 'All'},
     {value: 'ativo', text: 'Ativo'},
     {value: 'inativo', text: 'Inativo'},
-  ]
-
-  const headerTableNames = [
-    {id: 'column_nome', name: 'Nome'},
-    {id: 'column_crm', name: 'CRM'},
-    {id: 'column_status', name: 'Status'},
-    {id: 'column_acoes', name: 'Ações'},
   ]
 
   const handleClickEdit = (id) => {
@@ -60,30 +59,42 @@ const Medicos = () => {
       }
     } else {
       // Código para cancelar a exclusão
-    }
-       
+    } 
   }
 
-  const dataTableValues = dados.filter((item) => {
-      const filterByName = filtroNome.toLowerCase() === ''? item : item.nome.toLowerCase().includes(filtroNome)
-      const filterByStatus = filtroStatus === 'all' ? item : item.status === (filtroStatus === 'ativo' ? true : false)
-      const filterByCrm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
-      return filterByName && filterByStatus && filterByCrm
-    }).map((medico) => {
-      
-    return {
-      column_nome: medico.nome,
-      column_crm: medico.crm,
-      column_status: medico.status ? "Ativo" : "Inativo",
-      column_acoes: (
-        <div id={styles.td_acoes}>
-          <button onClick={() => handleClickEdit(medico.id)}><img src={EditIcon} alt="" /></button>
-          <button onClick={() => handleClickDelete(medico.id)}><img src={DeleteIcon} alt="" /></button>
-      </div>
-      )
-    }
-   })
+  useEffect(() => {
+    const btnFirst = document.getElementById('btn-first');
+    const btnLast = document.getElementById('btn-last');
+    const btnPageLeft = document.getElementById('btn-page-left');
+    const btnPageRight = document.getElementById('btn-page-right');
+    const paginaAnterior = document.getElementById('pagina_anterior');
+    const paginaPosterior = document.getElementById('pagina_posterior');
 
+    if(paginaAtual === 1){
+      btnFirst.disabled = true;
+      btnPageLeft.disabled = true;
+      paginaAnterior.style.visibility = 'hidden';
+      paginaAnterior.disabled = true;
+    }else{
+      btnFirst.disabled = false;
+      btnPageLeft.disabled = false;     
+      paginaAnterior.disabled = false;
+      paginaAnterior.style.visibility = 'visible';
+    }
+
+    if(paginaAtual === ultimaPagina){
+      btnLast.disabled = true;
+      btnPageRight.disabled = true;
+      paginaPosterior.style.visibility = 'hidden';
+      paginaPosterior.disabled = true;
+    }else{
+      btnLast.disabled = false;
+      btnPageRight.disabled = false;
+      paginaPosterior.style.visibility = 'visible';
+      paginaPosterior.disabled = false;
+    }
+
+  }, [paginaAtual, totalPages])
 
    const handlePageLeft = () => {
     if (pageNumber === 0) return;
@@ -91,7 +102,7 @@ const Medicos = () => {
   };
 
   const handlePageRight = () => {
-    if (pageNumber === totalPages - 1 ) return;
+    if (pageNumber === ultimaPagina ) return;
     setPageNumber(pageNumber + 1);
   };
 
@@ -100,7 +111,7 @@ const Medicos = () => {
   }
 
   const handleLastPage = () => {
-    setPageNumber(totalPages-1);
+    setPageNumber(ultimaPagina);
   }
 
   useEffect(() => {
@@ -143,11 +154,56 @@ const Medicos = () => {
               <SelectCommon id="filter_status" defaultValue="all" textLabel="Status" onchangeSet={setFiltroStatus} options={optionsFilterStatus} />
             </div>
           </div>
-          <div className={styles.table}>
-            <TableCommon columns={headerTableNames} data={dataTableValues}onPageLeft={handlePageLeft}
-            onPageRight={handlePageRight} totalPages={totalPages} pageNumber={pageNumber} onFirstPage={handleFirstPage} onLastPage={handleLastPage} pageSize={pageSize}/>
+          <table className={styles.table}>
+            <thead className={styles.thead}>
+                <tr className={styles.tr}>
+                    <th className={styles.th}>Nome</th>
+                    <th className={styles.th} >CRM</th>
+                    <th className={styles.th}>CPF</th>
+                    <th className={styles.th}>Telefone</th>
+                    <th className={styles.th}>Email</th>
+                    <th className={styles.th}>Status</th>
+                    <th className={styles.th}>Ações</th>
+                </tr>
+            </thead>
+                    
+            <tbody className={styles.tbody}>
+                {dados.map((medico, rowIndex) => (
+                    <tr className={styles.tr} key={rowIndex}>
+                          <td className={styles.td}>{medico.nome}</td>
+                          <td className={styles.td}>{medico.crm}</td>
+                          <td className={styles.td}>{medico.pessoa.cpf}</td>
+                          <td className={styles.td}>{medico.pessoa.telefone}</td>
+                          <td className={styles.td}>{medico.pessoa.email}</td>
+                          <td className={styles.td}>{medico.status === true ? "Ativo" : "Inativo"}</td>
+                          <td className={styles.td}>
+                            <div id={styles.td_acoes}>
+                              <button onClick={() => handleClickEdit(paciente.id)}><img src={EditIcon} alt="" /></button>
+                              <button onClick={() => handleClickDelete(paciente.id)}><img src={DeleteIcon} alt="" /></button>
+                            </div>
+                          </td>
+                    </tr>  
+                ))}
+            </tbody>
+        </table>
+        <div className={styles.pagination_action}>
+          <div className={styles.action}>
+            <button className={styles.btn_first} id="btn-first" onClick={handleFirstPage}><img src={doubleLeftIcon} alt="" /></button>
+            <button className={styles.btn_left} id="btn-page-left" onClick={handlePageLeft}><img src={voltarIcon} alt="" /></button>
           </div>
+          <div className={styles.numero_pagina}>
+            <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual -1}</button>
+            <button id='pagina_atual' className={styles.pagina_atual}>{paginaAtual}</button>
+            <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
+          </div>
+          <div className={styles.action}>
+            <button className={styles.btn_right} id="btn-page-right" onClick={handlePageRight}><img src={avancarIcon} alt="" /></button>
+            <button className={styles.btn_last}  id="btn-last" onClick={handleLastPage}><img src={doubleRightIcon} alt="" /></button>
+          </div>
+          
         </div>
+        <span>Página {paginaAtual} de {ultimaPagina}</span>
+          </div>
     </section>
   );
 };

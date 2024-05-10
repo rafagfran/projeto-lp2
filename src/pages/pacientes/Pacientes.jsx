@@ -6,7 +6,11 @@ import styles from '../../styles/pages/pacientes/Pacientes.module.css';
 import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import InputCommon from '../../components/common/InputCommon.jsx';
 import SelectCommon from '../../components/common/SelectCommon.jsx';
-import TableCommon from '../../components/common/TableCommon.jsx';
+
+import voltarIcon from '../../assets/voltar-white-icon.png'
+import avancarIcon from '../../assets/avancar-white-icon.png'
+import doubleLeftIcon from '../../assets/double-left-icon.png'
+import doubleRightIcon from '../../assets/double-right-icon.png'
 
 import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
@@ -22,6 +26,8 @@ const Pacientes = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
+  const [paginaAtual, setPaginaAtual] = useState(1)
+  const [ultimaPagina, setUltimaPagina] = useState(1)
 
 
   const optionsFilter = [
@@ -59,24 +65,6 @@ const Pacientes = () => {
        
   }
 
-  const dataTableValues = dados.filter((item) => {
-      const filterByName = filtroNome.toLowerCase() === ''? item : item.nome.toLowerCase().includes(filtroNome)
-      const filterByCpf = filtroCpf.toLowerCase() === '' ? item : item.cpf.toLowerCase().includes(filtroCpf)
-      return filterByName  && filterByCpf
-    }).map((paciente) => {
-    return {
-      column_nome: paciente.nome,
-      column_cpf: paciente.cpf,
-      column_sexo: paciente.pessoa.sexo,
-      column_telefone: paciente.pessoa.telefone,
-      column_acoes: (
-        <div id={styles.td_acoes}>
-          <button onClick={() => handleClickEdit(paciente.id)}><img src={EditIcon} alt="" /></button>
-          <button onClick={() => handleClickDelete(paciente.id)}><img src={DeleteIcon} alt="" /></button>
-      </div>
-      )
-    } 
-   })
 
    const handlePageLeft = () => {
     if (pageNumber === 0) return;
@@ -95,6 +83,40 @@ const Pacientes = () => {
   const handleLastPage = () => {
     setPageNumber(totalPages-1);
   }
+
+  useEffect(() => {
+    const btnFirst = document.getElementById('btn-first');
+    const btnLast = document.getElementById('btn-last');
+    const btnPageLeft = document.getElementById('btn-page-left');
+    const btnPageRight = document.getElementById('btn-page-right');
+    const paginaAnterior = document.getElementById('pagina_anterior');
+    const paginaPosterior = document.getElementById('pagina_posterior');
+
+    if(paginaAtual === 1){
+      btnFirst.disabled = true;
+      btnPageLeft.disabled = true;
+      paginaAnterior.style.visibility = 'hidden';
+      paginaAnterior.disabled = true;
+    }else{
+      btnFirst.disabled = false;
+      btnPageLeft.disabled = false;     
+      paginaAnterior.disabled = false;
+      paginaAnterior.style.visibility = 'visible';
+    }
+
+    if(paginaAtual === ultimaPagina){
+      btnLast.disabled = true;
+      btnPageRight.disabled = true;
+      paginaPosterior.style.visibility = 'hidden';
+      paginaPosterior.disabled = true;
+    }else{
+      btnLast.disabled = false;
+      btnPageRight.disabled = false;
+      paginaPosterior.style.visibility = 'visible';
+      paginaPosterior.disabled = false;
+    }
+
+  }, [paginaAtual, totalPages])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,10 +155,54 @@ const Pacientes = () => {
               <SelectCommon id="" defaultValue="10" textLabel="Itens por página" onchangeSet={setPageSize} options={optionsFilter} />
             </div>
           </div>
-          <div className={styles.table}>
-            <TableCommon columns={headerTableNames} data={dataTableValues}onPageLeft={handlePageLeft}
-            onPageRight={handlePageRight} totalPages={totalPages} pageNumber={pageNumber} onFirstPage={handleFirstPage} onLastPage={handleLastPage} pageSize={pageSize}/>
+          <table className={styles.table}>
+            <thead className={styles.thead}>
+                <tr className={styles.tr}>
+                    <th className={styles.th}>Nome</th>
+                    <th className={styles.th}>CPF</th>
+                    <th className={styles.th}>Telefone</th>
+                    <th className={styles.th}>Email</th>
+                    <th className={styles.th}>Sexo</th>
+                    <th className={styles.th}>Ações</th>
+                </tr>
+            </thead>
+                    
+            <tbody className={styles.tbody}>
+                {dados.map((paciente, rowIndex) => (
+                    <tr className={styles.tr} key={rowIndex}>
+                          <td className={styles.td}>{paciente.nome}</td>
+                          <td className={styles.td}>{paciente.pessoa.cpf}</td>
+                          <td className={styles.td}>{paciente.pessoa.telefone}</td>
+                          <td className={styles.td}>{paciente.pessoa.email}</td>
+                          <td className={styles.td}>{paciente.pessoa.sexo}</td>
+                          <td className={styles.td}>
+                            <div id={styles.td_acoes}>
+                              <button onClick={() => handleClickEdit(paciente.id)}><img src={EditIcon} alt="" /></button>
+                              <button onClick={() => handleClickDelete(paciente.id)}><img src={DeleteIcon} alt="" /></button>
+                            </div>
+                          </td>
+                          
+                    </tr>  
+                ))}
+            </tbody>
+        </table>
+        <div className={styles.pagination_action}>
+          <div className={styles.action}>
+            <button className={styles.btn_first} id="btn-first" onClick={""}><img src={doubleLeftIcon} alt="" /></button>
+            <button className={styles.btn_left} id="btn-page-left" onClick={""}><img src={voltarIcon} alt="" /></button>
           </div>
+          <div className={styles.numero_pagina}>
+            <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual - 1}</button>
+            <button id='pagina_atual' className={styles.pagina_atual}>{paginaAtual}</button>
+            <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
+          </div>
+          <div className={styles.action}>
+            <button className={styles.btn_right} id="btn-page-right" onClick={""}><img src={avancarIcon} alt="" /></button>
+            <button className={styles.btn_last}  id="btn-last" onClick={""}><img src={doubleRightIcon} alt="" /></button>
+          </div>
+          
+        </div>
+        <span>Página {paginaAtual} de {ultimaPagina}</span>
         </div>
     </section>
   );

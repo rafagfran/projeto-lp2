@@ -6,99 +6,63 @@ import styles from '../../styles/pages/agendamentos/Agendamentos.module.css';
 import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import InputCommon from '../../components/common/InputCommon.jsx';
 import SelectCommon from '../../components/common/SelectCommon.jsx';
-import TableCommon from '../../components/common/TableCommon.jsx';
+import voltarIcon from '../../assets/voltar-white-icon.png'
+import avancarIcon from '../../assets/avancar-white-icon.png'
+import doubleLeftIcon from '../../assets/double-left-icon.png'
+import doubleRightIcon from '../../assets/double-right-icon.png'
+import AgendamentosCrud from '../../CRUD/AgendamentosCrud'
 
 import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
-import AgendamentosCrud from '../../CRUD/AgendamentosCrud.jsx';
 
 const Agendamentos = () => {
   const navigate = useNavigate()
 
-  const [dados, setDados] = useState([])
+
   const [filtroNome, setFiltroNome] = useState('')
   const [filtroStatus, setFiltroStatus] = useState('all')
   const [filtroCpf, setfiltroCpf] = useState('')
+
+  const [dados, setDados] = useState([])
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
+  const [paginaAtual, setPaginaAtual] = useState(1)
+  const [ultimaPagina, setUltimaPagina] = useState(1)
 
-  const optionsFilter = [
-    {value: 10, text: 10},
-    {value: 20, text: 20},
-    {value: 50, text: 50},
-  ]
+  useEffect(() => {
+    const btnFirst = document.getElementById('btn-first');
+    const btnLast = document.getElementById('btn-last');
+    const btnPageLeft = document.getElementById('btn-page-left');
+    const btnPageRight = document.getElementById('btn-page-right');
+    const paginaAnterior = document.getElementById('pagina_anterior');
+    const paginaPosterior = document.getElementById('pagina_posterior');
 
-  const headerTableNames = [
-    {id: 'column_tipo_consulta', name: 'Tipo de consulta', width: '200px' },
-    {id: 'column_data_consulta', name: 'Data da consulta', width: '200px'},
-    {id: 'column_medico_nome', name: 'Médico'},
-    {id: 'column_paciente_nome', name: 'Paciente'},
-    {id: 'column_paciente_idade', name: 'Idade do paciente'},
-    {id: 'column_paciente_telefone', name: 'Telefone do paciente'},
-    {id: 'column_paciente_email', name: 'Email do paciente'},
-    {id: 'column_paciente_sexo', name: 'Sexo do paciente'},
-    {id: 'column_paciente_cpf', name: 'CPF do paciente'},
-    {id: 'column_acoes', name: 'Ações'},
-  ]
-
-  const handleClickEdit = (id) => {
-    navigate(`editar/${id}`)
-    console.log(id)
-  }
-
-  const handleClickDelete = async (id) => {
-    if (confirm("Você deseja realmente excluir este item?")) {
-      const agendamentosCrud = new AgendamentosCrud()
-      try {
-        const response = await agendamentosCrud.delete(id)
-        alert(response.data)
-      } catch (error) {
-        console.error("Error deleting:", error);
-      }
-    } else {
-      // Código para cancelar a exclusão
+    if(paginaAtual === 1){
+      btnFirst.disabled = true;
+      btnPageLeft.disabled = true;
+      paginaAnterior.style.visibility = 'hidden';
+      paginaAnterior.disabled = true;
+    }else{
+      btnFirst.disabled = false;
+      btnPageLeft.disabled = false;     
+      paginaAnterior.disabled = false;
+      paginaAnterior.style.visibility = 'visible';
     }
-       
-  }
 
-  const dataTableValues = dados.map((agendamento) => {
-    return {
-      column_tipo_consulta: agendamento.tipoConsulta,
-      column_data_consulta: agendamento.dataHora,
-      column_medico_nome: agendamento.medico.nome,
-      column_paciente_nome: agendamento.paciente.nome,
-      column_paciente_idade: agendamento.paciente.pessoa.idade, 
-      column_paciente_telefone: agendamento.paciente.pessoa.telefone,
-      column_paciente_email: agendamento.paciente.email,
-      column_paciente_sexo: agendamento.paciente.pessoa.sexo,
-      column_paciente_cpf: agendamento.paciente.cpf,
-      column_acoes: (
-        <div id={styles.td_acoes}>
-          <button onClick={() => handleClickEdit(agendamento.id)}><img src={EditIcon} alt="" /></button>
-          <button onClick={() => handleClickDelete(agendamento.id)}><img src={DeleteIcon} alt="" /></button>
-      </div>
-      )
-    } 
-   })
+    if(paginaAtual === ultimaPagina){
+      btnLast.disabled = true;
+      btnPageRight.disabled = true;
+      paginaPosterior.style.visibility = 'hidden';
+      paginaPosterior.disabled = true;
+    }else{
+      btnLast.disabled = false;
+      btnPageRight.disabled = false;
+      paginaPosterior.style.visibility = 'visible';
+      paginaPosterior.disabled = false;
+    }
 
-   const handlePageLeft = () => {
-    if (pageNumber === 0) return;
-    setPageNumber(pageNumber - 1); 
-  };
-
-  const handlePageRight = () => {
-    if (pageNumber === totalPages - 1 ) return;
-    setPageNumber(pageNumber + 1);
-  };
-
-  const handleFirstPage = () => {
-    setPageNumber(0);
-  }
-
-  const handleLastPage = () => {
-    setPageNumber(totalPages-1);
-  }
+  }, [paginaAtual, totalPages])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -116,6 +80,66 @@ const Agendamentos = () => {
     }
     fetchData();
   }, [pageNumber, pageSize])
+
+  
+
+  const optionsFilter = [
+    {value: 10, text: 10},
+    {value: 20, text: 20},
+    {value: 50, text: 50},
+  ]
+
+  // const handleClickEdit = (id) => {
+  //   navigate(`editar/${id}`)
+  //   console.log(id)
+  // }
+
+  // const handleClickDelete = async (id) => {
+  //   if (confirm("Você deseja realmente excluir este item?")) {
+  //     const agendamentosCrud = new AgendamentosCrud()
+  //     try {
+  //       const response = await agendamentosCrud.delete(id)
+  //       alert(response.data)
+  //     } catch (error) {
+  //       console.error("Error deleting:", error);
+  //     }
+  //   } else {
+  //     // Código para cancelar a exclusão
+  //   }
+       
+  // }
+
+  // const dataTableValues = dados.map((agendamento) => {
+  //   return {
+  
+  //     column_acoes: (
+  //       <div id={styles.td_acoes}>
+  //         <button onClick={() => handleClickEdit(agendamento.id)}><img src={EditIcon} alt="" /></button>
+  //         <button onClick={() => handleClickDelete(agendamento.id)}><img src={DeleteIcon} alt="" /></button>
+  //     </div>
+  //     )
+  //   } 
+  //  })
+
+  //  const handlePageLeft = () => {
+  //   if (pageNumber === 0) return;
+  //   setPageNumber(pageNumber - 1); 
+  // };
+
+  // const handlePageRight = () => {
+  //   if (pageNumber === totalPages - 1 ) return;
+  //   setPageNumber(pageNumber + 1);
+  // };
+
+  // const handleFirstPage = () => {
+  //   setPageNumber(0);
+  // }
+
+  // const handleLastPage = () => {
+  //   setPageNumber(totalPages-1);
+  // }
+
+ 
 
   return (
     <section className={styles.agendamentos}>
@@ -137,10 +161,49 @@ const Agendamentos = () => {
               <SelectCommon id="" defaultValue="10" textLabel="Itens por página" onchangeSet={setPageSize} options={optionsFilter} />
             </div>
           </div>
-          <div className={styles.table}>
-            <TableCommon columns={headerTableNames} data={dataTableValues}onPageLeft={handlePageLeft}
-            onPageRight={handlePageRight} totalPages={totalPages} pageNumber={pageNumber} onFirstPage={handleFirstPage} onLastPage={handleLastPage} pageSize={pageSize}/>
-          </div>
+            <table className={styles.table}>
+                <thead className={styles.thead}>
+                    <tr className={styles.tr}>
+                        <th className={styles.th}>Nome do paciente</th>
+                        <th className={styles.th} >Nome do médico</th>
+                        <th className={styles.th}>Data</th>
+                        <th className={styles.th}>Ações</th>
+                    </tr>
+                </thead>
+                        
+                <tbody className={styles.tbody}>
+                    {dados.map((agendamento, rowIndex) => (
+                        <tr className={styles.tr} key={rowIndex}>
+                            <td className={styles.td}>{agendamento.paciente.nome}</td>
+                            <td className={styles.td}>{agendamento.medico.nome}</td>
+                            <td className={styles.td}>{agendamento.dataHora}</td>
+                            <td className={styles.td}>
+                              <div id={styles.td_acoes}>
+                                <button onClick={() => handleClickEdit(paciente.id)}><img src={EditIcon} alt="" /></button>
+                                <button onClick={() => handleClickDelete(paciente.id)}><img src={DeleteIcon} alt="" /></button>
+                              </div>
+                            </td>
+                        </tr>  
+                    ))}
+                </tbody>
+            </table>
+            <div className={styles.pagination_action}>
+              <div className={styles.action}>
+                <button className={styles.btn_first} id="btn-first" onClick={""}><img src={doubleLeftIcon} alt="" /></button>
+                <button className={styles.btn_left} id="btn-page-left" onClick={""}><img src={voltarIcon} alt="" /></button>
+              </div>
+              <div className={styles.numero_pagina}>
+                <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual - 1}</button>
+                <button id='pagina_atual' className={styles.pagina_atual}>{paginaAtual}</button>
+                <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
+              </div>
+              <div className={styles.action}>
+                <button className={styles.btn_right} id="btn-page-right" onClick={""}><img src={avancarIcon} alt="" /></button>
+                <button className={styles.btn_last}  id="btn-last" onClick={""}><img src={doubleRightIcon} alt="" /></button>
+              </div>
+              
+            </div>
+            <span>Página {paginaAtual} de {ultimaPagina}</span>
         </div>
     </section>
   );

@@ -1,41 +1,40 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../../styles/components/common/TableCommon.module.css'
 import voltarIcon from '../../assets/voltar-white-icon.png'
 import avancarIcon from '../../assets/avancar-white-icon.png'
 import doubleLeftIcon from '../../assets/double-left-icon.png'
 import doubleRightIcon from '../../assets/double-right-icon.png'
+import AgendamentosCrud from '../../CRUD/AgendamentosCrud'
 
-const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNumber, onFirstPage, onLastPage, pageSize}) => {
+const TableCommon = ( ) => {
 
-  const paginaAtual = pageNumber + 1;
-  const ultimaPagina = totalPages
+  const [dados, setDados] = useState([])
+  const [pageNumber, setPageNumber] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
+  const [totalPages, setTotalPages] = useState(0)
+  const [paginaAtual, setPaginaAtual] = useState(1)
+  const [ultimaPagina, setUltimaPagina] = useState(1)
 
-  const styleColumns = {
-    textAlign: 'center',
-}
+  // const handleClickPageLeft = () => {
+  //   onPageLeft(); 
+  // };
 
- 
-
-  const handleClickPageLeft = () => {
-    onPageLeft(); 
-  };
-
-  const handleClickPageRight = () => {
-    onPageRight();
+  // const handleClickPageRight = () => {
+  //   onPageRight();
    
-  };
+  // };
 
-  const handleClickFirstPage = () => {
-    onFirstPage();
-  }
+  // const handleClickFirstPage = () => {
+  //   onFirstPage();
+  // }
 
-  const handleClickLastPage = () => {
-    onLastPage();
-  }
+  // const handleClickLastPage = () => {
+  //   onLastPage();
+  // }
 
-  useEffect(() => {
-    onFirstPage();
-  }, [pageSize])
+  // useEffect(() => {
+  //   onFirstPage();
+  // }, [pageSize])
 
   useEffect(() => {
     const btnFirst = document.getElementById('btn-first');
@@ -71,58 +70,49 @@ const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNu
 
   }, [paginaAtual, totalPages])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const agendamentosCrud = new AgendamentosCrud()
+        const response = await agendamentosCrud.list(pageNumber, pageSize)
+        setDados(response)
+
+        const allData = await agendamentosCrud.getAll()
+        const total = Math.ceil(allData.length / pageSize)
+        setTotalPages(total)
+      } catch (error) {
+        console.error('Erro ao recuperar os dados:', error);
+      }
+    }
+    fetchData();
+  }, [pageNumber, pageSize])
+
+
   return (
     <>
         <table className={styles.table}>
             <thead className={styles.thead}>
                 <tr className={styles.tr}>
-                    {columns.map((column, index) => (
-                        <th 
-                          className={styles.th}
-                          key={index} 
-                          id={column.id}
-                          style={
-                            column.id === 'column_status' 
-                            || column.id === 'column_acoes' 
-                            ? styleColumns : null} 
-                            >{column.name}
-                        </th>
-                    ))}
+                    <th className={styles.th}>Nome do paciente</th>
+                    <th className={styles.th} >Nome do médico</th>
+                    <th className={styles.th}>data</th>
                 </tr>
             </thead>
                     
             <tbody className={styles.tbody}>
-                {/* pra cada linha de dados, cria uma linha na tabela */}
-                {data.map((row, rowIndex) => (
+                {dados.map((agendamento, rowIndex) => (
                     <tr className={styles.tr} key={rowIndex}>
-                        {/* pra cada coluna, cria uma celula na linha */}
-                        {columns.map((column, columnIndex) => (
-                            // o valor da celula é o valor da linha concatenado com a coluna ex: 0-1
-                            //explicação de {row[column.id]}: row é o objeto que contém os valores de cada linha, e column.id é o nome da chave que contém o valor que queremos exibir
-                            //exemplo: row = {column_nome: 'Dr. João da Silva', column_crm: '123456', column_status: 'Ativo'}
-                            //column.id = 'column_crm'
-                            //row[column.id] = row['column_crm'] = '123456'
-                            //ou seja, row[column.id] é o valor da coluna 'column_crm' da linha row
-                            <td
-                              className={styles.td}
-                              id={column.id} 
-                              key={`${rowIndex}-${columnIndex}`} 
-                              style={
-                                column.id === 'column_status' 
-                                ? styleColumns 
-                                : null
-                              }>
-                              {row[column.id]}
-                            </td>
-                        ))}
+                          <td className={styles.td}>{agendamento.paciente.nome}</td>
+                          <td className={styles.td}>{agendamento.medico.nome}</td>
+                          <td className={styles.td}>{agendamento.dataHora}</td>
                     </tr>  
                 ))}
             </tbody>
         </table>
         <div className={styles.pagination}>
           <div className={styles.action}>
-            <button className={styles.btn_first} id="btn-first" onClick={handleClickFirstPage}><img src={doubleLeftIcon} alt="" /></button>
-            <button className={styles.btn_left} id="btn-page-left" onClick={handleClickPageLeft}><img src={voltarIcon} alt="" /></button>
+            <button className={styles.btn_first} id="btn-first" onClick={""}><img src={doubleLeftIcon} alt="" /></button>
+            <button className={styles.btn_left} id="btn-page-left" onClick={""}><img src={voltarIcon} alt="" /></button>
           </div>
           <div className={styles.numero_pagina}>
             <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual - 1}</button>
@@ -130,8 +120,8 @@ const TableCommon = ({columns, data, onPageLeft, onPageRight, totalPages, pageNu
             <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
           </div>
           <div className={styles.action}>
-            <button className={styles.btn_right} id="btn-page-right" onClick={handleClickPageRight}><img src={avancarIcon} alt="" /></button>
-            <button className={styles.btn_last}  id="btn-last" onClick={handleClickLastPage}><img src={doubleRightIcon} alt="" /></button>
+            <button className={styles.btn_right} id="btn-page-right" onClick={""}><img src={avancarIcon} alt="" /></button>
+            <button className={styles.btn_last}  id="btn-last" onClick={""}><img src={doubleRightIcon} alt="" /></button>
           </div>
           
         </div>
