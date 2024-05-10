@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import styles from '../../styles/pages/medicos/Medicos.module.css';
+import styles from '../../styles/pages/pacientes/Pacientes.module.css';
 
 import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import InputCommon from '../../components/common/InputCommon.jsx';
@@ -114,9 +114,9 @@ const Pacientes = () => {
   }, [pageNumber, pageSize])
 
   return (
-    <section className={styles.medicos}>
+    <section className={styles.pacientes}>
         <header className={styles.header}>
-          <h2>Registro de médicos</h2>
+          <h2>Registro de pacientes</h2>
         </header>
         <div className={styles.body}>
           <div className={styles.add}>
@@ -126,8 +126,8 @@ const Pacientes = () => {
             <div className={styles.filter_nome} >
               <InputCommon  type="text" id='filter_nome' textLabel="Buscar nome" onchangeInputSet={setFiltroNome} placeholder="Buscar"/>
             </div>
-            <div className={styles.filter_crm}>
-              <InputCommon  className={styles.filter_cpf} type="text" id='filter_crm' textLabel="Buscar CPF" onchangeInputSet={setfiltroCpf} placeholder="Buscar"/>
+            <div className={styles.filter_cpf}>
+              <InputCommon  className={styles.filter_cpf} type="text" id='filter_cpf' textLabel="Buscar CPF" onchangeInputSet={setfiltroCpf} placeholder="Buscar"/>
             </div>
             <div className={styles.pagination}>
               <SelectCommon id="" defaultValue="10" textLabel="Itens por página" onchangeSet={setPageSize} options={optionsFilter} />

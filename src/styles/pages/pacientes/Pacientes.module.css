@@ -1,0 +1,73 @@
+.pacientes{
+    display: flex;
+    flex-direction: column;  
+    flex: 1;
+}
+
+.header{
+    border-bottom: 1px solid #d1d1d1;
+    padding: 2px 20px;
+    margin-bottom: 30px;
+}
+
+.header > h2{
+    font-weight: 500;
+    font-size: 1rem;
+    color: #410f9e;
+}
+
+.body{
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.filters{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr) ;   
+    gap: 10px;
+}
+
+.filter_nome{
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+
+.filter_cpf{
+    grid-column-start: 4;
+    grid-column-end: 7;
+}
+
+
+.pagination{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+
+#td_acoes{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+#td_acoes > button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+}
+
+#td_acoes > button > img{
+    width: 25px;
+    height: 25px;
+
+}
+
+
+
+
+
+
