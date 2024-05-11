@@ -18,7 +18,7 @@ const Sidebar = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/home"><img src={homeIcon} alt="icon-home" />Home</Link>
+              <Link to="/"><img src={homeIcon} alt="icon-home" />Home</Link>
             </li>
             <li>
               <Link to="/home/medicos"><img src={medicoIcon} alt="icon-medico" />Medicos</Link>

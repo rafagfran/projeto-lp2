@@ -26,6 +26,8 @@ const Medicos = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
+  const [itemNumber, setItemNumber] = useState(0)
+
 
   const paginaAtual = pageNumber + 1
   const ultimaPagina = totalPages
@@ -98,7 +100,7 @@ const Medicos = () => {
 
    const handlePageLeft = () => {
     if (pageNumber === 0) return;
-    setPageNumber(pageNumber - 1); 
+    setPageNumber(pageNumber - 1);
   };
 
   const handlePageRight = () => {
@@ -111,7 +113,7 @@ const Medicos = () => {
   }
 
   const handleLastPage = () => {
-    setPageNumber(ultimaPagina);
+    setPageNumber(ultimaPagina-1);
   }
 
   useEffect(() => {
@@ -154,51 +156,61 @@ const Medicos = () => {
               <SelectCommon id="filter_status" defaultValue="all" textLabel="Status" onchangeSet={setFiltroStatus} options={optionsFilterStatus} />
             </div>
           </div>
-          <table className={styles.table}>
-            <thead className={styles.thead}>
-                <tr className={styles.tr}>
-                    <th className={styles.th}>Nome</th>
-                    <th className={styles.th} >CRM</th>
-                    <th className={styles.th}>CPF</th>
-                    <th className={styles.th}>Telefone</th>
-                    <th className={styles.th}>Email</th>
-                    <th className={styles.th}>Status</th>
-                    <th className={styles.th}>Ações</th>
-                </tr>
-            </thead>
-                    
-            <tbody className={styles.tbody}>
-                {dados.map((medico, rowIndex) => (
-                    <tr className={styles.tr} key={rowIndex}>
-                          <td className={styles.td}>{medico.nome}</td>
-                          <td className={styles.td}>{medico.crm}</td>
-                          <td className={styles.td}>{medico.pessoa.cpf}</td>
-                          <td className={styles.td}>{medico.pessoa.telefone}</td>
-                          <td className={styles.td}>{medico.pessoa.email}</td>
-                          <td className={styles.td}>{medico.status === true ? "Ativo" : "Inativo"}</td>
-                          <td className={styles.td}>
-                            <div id={styles.td_acoes}>
-                              <button onClick={() => handleClickEdit(paciente.id)}><img src={EditIcon} alt="" /></button>
-                              <button onClick={() => handleClickDelete(paciente.id)}><img src={DeleteIcon} alt="" /></button>
-                            </div>
-                          </td>
-                    </tr>  
-                ))}
-            </tbody>
-        </table>
-        <div className={styles.pagination_action}>
-          <div className={styles.action}>
-            <button className={styles.btn_first} id="btn-first" onClick={handleFirstPage}><img src={doubleLeftIcon} alt="" /></button>
-            <button className={styles.btn_left} id="btn-page-left" onClick={handlePageLeft}><img src={voltarIcon} alt="" /></button>
+          <div className={styles.table_container}>
+            <table className={styles.table}>
+              <thead className={styles.thead}>
+                  <tr className={styles.tr}>
+                    <th className={styles.column_number}>#</th>
+                      <th className={styles.column_nome}>Nome</th>
+                      <th className={styles.column_crm} >CRM</th>
+                      <th className={styles.column_cpf}>CPF</th>
+                      <th className={styles.column_telefone}>Telefone</th>
+                      <th className={styles.column_email}>Email</th>
+                      <th className={styles.column_status}>Status</th>
+                      <th className={styles.column_acoes}>Ações</th>
+                  </tr>
+              </thead>
+                      
+              <tbody className={styles.tbody}>
+                  {dados.filter((item) => {
+                    const nome = filtroNome.toLowerCase() === '' ? item : item.nome.toLowerCase().includes(filtroNome)
+                    const crm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
+                    const status = filtroStatus === 'all' ? item : item.status === (filtroStatus === 'ativo' ? true : false)
+
+                    return nome && crm && status
+                  }).map((medico, rowIndex) => (
+                      <tr className={styles.tr} key={rowIndex}>
+                            <td className={styles.column_number}>{}</td>
+                            <td className={styles.column_nome}>{medico.nome}</td>
+                            <td className={styles.column_crm}>{medico.crm}</td>
+                            <td className={styles.column_cpf}>{medico.pessoa.cpf}</td>
+                            <td className={styles.column_telefone}>{medico.pessoa.telefone}</td>
+                            <td className={styles.column_email}>{medico.pessoa.email}</td>
+                            <td className="column_status">{medico.status === true ? "Ativo" : "Inativo"}</td>
+                            <td className="column_acoes">
+                              <div id="td_acoes">
+                                <button onClick={() => handleClickEdit(medico.id)}><img src={EditIcon} alt="" /></button>
+                                <button onClick={() => handleClickDelete(medico.id)}><img src={DeleteIcon} alt="" /></button>
+                              </div>
+                            </td>
+                      </tr>  
+                  ))}
+              </tbody>
+            </table>
           </div>
-          <div className={styles.numero_pagina}>
-            <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual -1}</button>
-            <button id='pagina_atual' className={styles.pagina_atual}>{paginaAtual}</button>
-            <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
+        <div className="pagination_action">
+          <div className="action">
+            <button className="btn_first"  id="btn-first" onClick={handleFirstPage}><img src={doubleLeftIcon} alt="" /></button>
+            <button className="btn_left" id="btn-page-left" onClick={handlePageLeft}><img src={voltarIcon} alt="" /></button>
           </div>
-          <div className={styles.action}>
-            <button className={styles.btn_right} id="btn-page-right" onClick={handlePageRight}><img src={avancarIcon} alt="" /></button>
-            <button className={styles.btn_last}  id="btn-last" onClick={handleLastPage}><img src={doubleRightIcon} alt="" /></button>
+          <div className="numero_pagina">
+            <button id='pagina_anterior' className="pagina_anterior">{paginaAtual -1}</button>
+            <button id='pagina_atual' className="pagina_atual">{paginaAtual}</button>
+            <button id='pagina_posterior' className="">{paginaAtual +  1}</button>
+          </div>
+          <div className="action">
+            <button className="btn_right "id="btn-page-right" onClick={handlePageRight}><img src={avancarIcon} alt="" /></button>
+            <button className="btn_last " id="btn-last" onClick={handleLastPage}><img src={doubleRightIcon} alt="" /></button>
           </div>
           
         </div>
