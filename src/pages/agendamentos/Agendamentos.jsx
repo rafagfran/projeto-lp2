@@ -14,6 +14,7 @@ import AgendamentosCrud from '../../CRUD/AgendamentosCrud'
 
 import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
+import TableCommon from '../../components/common/TableCommon.jsx';
 
 const Agendamentos = () => {
   const navigate = useNavigate()
@@ -30,39 +31,6 @@ const Agendamentos = () => {
   const paginaAtual = pageNumber + 1
   const ultimaPagina = totalPages
 
-  useEffect(() => {
-    const btnFirst = document.getElementById('btn-first');
-    const btnLast = document.getElementById('btn-last');
-    const btnPageLeft = document.getElementById('btn-page-left');
-    const btnPageRight = document.getElementById('btn-page-right');
-    const paginaAnterior = document.getElementById('pagina_anterior');
-    const paginaPosterior = document.getElementById('pagina_posterior');
-
-    if(paginaAtual === 1){
-      btnFirst.disabled = true;
-      btnPageLeft.disabled = true;
-      paginaAnterior.style.visibility = 'hidden';
-      paginaAnterior.disabled = true;
-    }else{
-      btnFirst.disabled = false;
-      btnPageLeft.disabled = false;     
-      paginaAnterior.disabled = false;
-      paginaAnterior.style.visibility = 'visible';
-    }
-
-    if(paginaAtual === ultimaPagina){
-      btnLast.disabled = true;
-      btnPageRight.disabled = true;
-      paginaPosterior.style.visibility = 'hidden';
-      paginaPosterior.disabled = true;
-    }else{
-      btnLast.disabled = false;
-      btnPageRight.disabled = false;
-      paginaPosterior.style.visibility = 'visible';
-      paginaPosterior.disabled = false;
-    }
-
-  }, [paginaAtual, totalPages])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,13 +49,6 @@ const Agendamentos = () => {
     fetchData();
   }, [pageNumber, pageSize])
 
-  
-
-  const optionsFilter = [
-    {value: 10, text: 10},
-    {value: 20, text: 20},
-    {value: 50, text: 50},
-  ]
 
   const handleClickEdit = (id) => {
     navigate(`editar/${id}`)
@@ -107,25 +68,13 @@ const Agendamentos = () => {
       // Código para cancelar a exclusão
     }
   }
-
-  const handlePageLeft = () => {
-    if (pageNumber === 0) return;
-    setPageNumber(pageNumber - 1); 
+  const handlePageSizeChange = (newSize) => {
+    setPageSize(newSize);
   };
 
-  const handlePageRight = () => {
-    if (pageNumber === ultimaPagina ) return;
-    setPageNumber(pageNumber + 1);
-  };
-
-  const handleFirstPage = () => {
-    setPageNumber(0);
+  const handlePageNumberChange = (newPage) => {
+    setPageNumber(newPage);
   }
-
-  const handleLastPage = () => {
-    setPageNumber(ultimaPagina);
-  }
- 
 
   return (
     <section className={styles.agendamentos}>
@@ -143,53 +92,35 @@ const Agendamentos = () => {
             <div className={styles.filter_cpf}>
               <InputCommon  className={styles.filter_cpf} type="text" id='filter_cpf' textLabel="Buscar CPF" onchangeInputSet={setfiltroCpf} placeholder="Buscar"/>
             </div>
-            <div className={styles.pagination}>
-              <SelectCommon id="" defaultValue="10" textLabel="Itens por página" onchangeSet={setPageSize} options={optionsFilter} />
-            </div>
           </div>
-            <table className={styles.table}>
-                <thead className={styles.thead}>
-                    <tr className={styles.tr}>
-                        <th className={styles.th}>Nome do paciente</th>
-                        <th className={styles.th} >Nome do médico</th>
-                        <th className={styles.th}>Data</th>
-                        <th className={styles.th}>Ações</th>
-                    </tr>
-                </thead>
-                        
-                <tbody className={styles.tbody}>
-                    {dados.map((agendamento, rowIndex) => (
-                        <tr className={styles.tr} key={rowIndex}>
-                            <td className={styles.td}>{agendamento.paciente.nome}</td>
-                            <td className={styles.td}>{agendamento.medico.nome}</td>
-                            <td className={styles.td}>{agendamento.dataHora}</td>
-                            <td className={styles.td}>
-                              <div id={styles.td_acoes}>
-                                <button onClick={() => handleClickEdit(paciente.id)}><img src={EditIcon} alt="" /></button>
-                                <button onClick={() => handleClickDelete(paciente.id)}><img src={DeleteIcon} alt="" /></button>
-                              </div>
-                            </td>
-                        </tr>  
-                    ))}
-                </tbody>
-            </table>
-            <div className={styles.pagination_action}>
-              <div className={styles.action}>
-                <button className={styles.btn_first} id="btn-first" onClick={handleFirstPage}><img src={doubleLeftIcon} alt="" /></button>
-                <button className={styles.btn_left} id="btn-page-left" onClick={handlePageLeft}><img src={voltarIcon} alt="" /></button>
-              </div>
-              <div className={styles.numero_pagina}>
-                <button id='pagina_anterior' className={styles.pagina_anterior}>{paginaAtual - 1}</button>
-                <button id='pagina_atual' className={styles.pagina_atual}>{paginaAtual}</button>
-                <button id='pagina_posterior' className={styles.pagina_posterior}>{paginaAtual +  1}</button>
-              </div>
-              <div className={styles.action}>
-                <button className={styles.btn_right} id="btn-page-right" onClick={{handlePageRight}}><img src={avancarIcon} alt="" /></button>
-                <button className={styles.btn_last}  id="btn-last" onClick={{handleLastPage}}><img src={doubleRightIcon} alt="" /></button>
-              </div>
-              
-            </div>
-            <span>Página {paginaAtual} de {ultimaPagina}</span>
+          <TableCommon 
+            alterPageSize={handlePageSizeChange}
+            alterPageNumber={handlePageNumberChange}
+            totalPages={totalPages}
+            header={[
+              {name: 'tipo_consulta', text: 'Tipo de consulta'},
+              {name: 'nome_médico', text: 'Nome do médico'},
+              {name: 'nome_paciente', text: 'Nome do paciente'},
+              {name: 'cpf_paciente', text: 'CPF do paciente'},
+              {name: 'telefone_paciente', text: 'Telefone do paciente'},
+              {name: 'acoes', text: 'Ações'}
+            ]}
+            dados={dados.map((agendamento, index) => {
+              return {
+                id: agendamento.id,
+                tipo_consulta:agendamento.tipoConsulta,
+                nome_médico: agendamento.medico.nome,
+                nome_paciente: agendamento.paciente.nome,
+                cpf_paciente: agendamento.paciente.pessoa.cpf,
+                telefone_paciente: agendamento.paciente.pessoa.telefone,
+                acoes:
+                  <div id="td_acoes">
+                    <button onClick={() => handleClickEdit(paciente.id)}><img src={EditIcon} alt="" /></button>
+                    <button onClick={() => handleClickDelete(paciente.id)}><img src={DeleteIcon} alt="" /></button>
+                  </div>
+              } 
+            })}
+          />
         </div>
     </section>
   );

@@ -15,6 +15,7 @@ import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
 
 import MedicosCrud from '../../CRUD/MedicosCrud.jsx';
+import TableCommon from '../../components/common/TableCommon.jsx';
 
 const Medicos = () => {
   const navigate = useNavigate()
@@ -28,26 +29,18 @@ const Medicos = () => {
   const [totalPages, setTotalPages] = useState(0)
   const [itemNumber, setItemNumber] = useState(0)
 
-
-  const paginaAtual = pageNumber + 1
-  const ultimaPagina = totalPages
-
-
-  const optionsFilter = [
-    {value: 10, text: 10},
-    {value: 20, text: 20},
-    {value: 50, text: 50},
-  ]
-
   const optionsFilterStatus = [
     {value: 'all', text: 'All'},
     {value: 'ativo', text: 'Ativo'},
     {value: 'inativo', text: 'Inativo'},
   ]
 
-  const handleClickEdit = (id) => {
-    navigate(`editar/${id}`)
-    console.log(id)
+  const handlePageSizeChange = (newSize) => {
+    setPageSize(newSize);
+  };
+
+  const handlePageNumberChange = (newPage) => {
+    setPageNumber(newPage);
   }
 
   const handleClickDelete = async (id) => {
@@ -56,6 +49,7 @@ const Medicos = () => {
       try {
         const response = await medicosCrud.delete(id)
         alert(response.data)
+        
       } catch (error) {
         console.error("Error deleting:", error);
       }
@@ -65,66 +59,15 @@ const Medicos = () => {
   }
 
   useEffect(() => {
-    const btnFirst = document.getElementById('btn-first');
-    const btnLast = document.getElementById('btn-last');
-    const btnPageLeft = document.getElementById('btn-page-left');
-    const btnPageRight = document.getElementById('btn-page-right');
-    const paginaAnterior = document.getElementById('pagina_anterior');
-    const paginaPosterior = document.getElementById('pagina_posterior');
-
-    if(paginaAtual === 1){
-      btnFirst.disabled = true;
-      btnPageLeft.disabled = true;
-      paginaAnterior.style.visibility = 'hidden';
-      paginaAnterior.disabled = true;
-    }else{
-      btnFirst.disabled = false;
-      btnPageLeft.disabled = false;     
-      paginaAnterior.disabled = false;
-      paginaAnterior.style.visibility = 'visible';
-    }
-
-    if(paginaAtual === ultimaPagina){
-      btnLast.disabled = true;
-      btnPageRight.disabled = true;
-      paginaPosterior.style.visibility = 'hidden';
-      paginaPosterior.disabled = true;
-    }else{
-      btnLast.disabled = false;
-      btnPageRight.disabled = false;
-      paginaPosterior.style.visibility = 'visible';
-      paginaPosterior.disabled = false;
-    }
-
-  }, [paginaAtual, totalPages])
-
-   const handlePageLeft = () => {
-    if (pageNumber === 0) return;
-    setPageNumber(pageNumber - 1);
-  };
-
-  const handlePageRight = () => {
-    if (pageNumber === ultimaPagina ) return;
-    setPageNumber(pageNumber + 1);
-  };
-
-  const handleFirstPage = () => {
-    setPageNumber(0);
-  }
-
-  const handleLastPage = () => {
-    setPageNumber(ultimaPagina-1);
-  }
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const medicosCrud = new MedicosCrud()
         const response = await medicosCrud.list(pageNumber, pageSize)
         setDados(response)
-
+        
         const allData = await medicosCrud.getAll()
         const total = Math.ceil(allData.length / pageSize)
+        console.log(dados.content)
         setTotalPages(total)
       } catch (error) {
         console.error('Erro ao recuperar os dados:', error);
@@ -132,6 +75,7 @@ const Medicos = () => {
     }
     fetchData();
   }, [pageNumber, pageSize])
+
 
   return (
     <section className={styles.medicos}>
@@ -149,72 +93,40 @@ const Medicos = () => {
             <div className={styles.filter_crm}>
               <InputCommon  className={styles.filter_crm} type="text" id='filter_crm' textLabel="Buscar CRM" onchangeInputSet={setFiltroCrm} placeholder="Buscar"/>
             </div>
-            <div className={styles.pagination}>
-              <SelectCommon id="" defaultValue="10" textLabel="Itens por página" onchangeSet={setPageSize} options={optionsFilter} />
-            </div>
+            
             <div className={styles.filter_status}>
               <SelectCommon id="filter_status" defaultValue="all" textLabel="Status" onchangeSet={setFiltroStatus} options={optionsFilterStatus} />
             </div>
           </div>
-          <div className={styles.table_container}>
-            <table className={styles.table}>
-              <thead className={styles.thead}>
-                  <tr className={styles.tr}>
-                    <th className={styles.column_number}>#</th>
-                      <th className={styles.column_nome}>Nome</th>
-                      <th className={styles.column_crm} >CRM</th>
-                      <th className={styles.column_cpf}>CPF</th>
-                      <th className={styles.column_telefone}>Telefone</th>
-                      <th className={styles.column_email}>Email</th>
-                      <th className={styles.column_status}>Status</th>
-                      <th className={styles.column_acoes}>Ações</th>
-                  </tr>
-              </thead>
-                      
-              <tbody className={styles.tbody}>
-                  {dados.filter((item) => {
-                    const nome = filtroNome.toLowerCase() === '' ? item : item.nome.toLowerCase().includes(filtroNome)
-                    const crm = filtroCrm.toLowerCase() === '' ? item : item.crm.toLowerCase().includes(filtroCrm)
-                    const status = filtroStatus === 'all' ? item : item.status === (filtroStatus === 'ativo' ? true : false)
+          <TableCommon
+            alterPageSize={handlePageSizeChange} 
+            alterPageNumber={handlePageNumberChange}
+            totalPages={totalPages}
+            header={[
+              {name: 'nome', text: 'Nome'},
+              {name: 'crm', text: 'CRM'},
+              {name: 'telefone', text: 'Telefone'},
+              {name: 'email', text: 'Email'},
+              {name: 'status', text: 'Status'},
+              {name: 'acoes', text: 'Ações'},
+            ]}
 
-                    return nome && crm && status
-                  }).map((medico, rowIndex) => (
-                      <tr className={styles.tr} key={rowIndex}>
-                            <td className={styles.column_number}>{}</td>
-                            <td className={styles.column_nome}>{medico.nome}</td>
-                            <td className={styles.column_crm}>{medico.crm}</td>
-                            <td className={styles.column_cpf}>{medico.pessoa.cpf}</td>
-                            <td className={styles.column_telefone}>{medico.pessoa.telefone}</td>
-                            <td className={styles.column_email}>{medico.pessoa.email}</td>
-                            <td className="column_status">{medico.status === true ? "Ativo" : "Inativo"}</td>
-                            <td className="column_acoes">
-                              <div id="td_acoes">
-                                <button onClick={() => handleClickEdit(medico.id)}><img src={EditIcon} alt="" /></button>
-                                <button onClick={() => handleClickDelete(medico.id)}><img src={DeleteIcon} alt="" /></button>
-                              </div>
-                            </td>
-                      </tr>  
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        <div className="pagination_action">
-          <div className="action">
-            <button className="btn_first"  id="btn-first" onClick={handleFirstPage}><img src={doubleLeftIcon} alt="" /></button>
-            <button className="btn_left" id="btn-page-left" onClick={handlePageLeft}><img src={voltarIcon} alt="" /></button>
-          </div>
-          <div className="numero_pagina">
-            <button id='pagina_anterior' className="pagina_anterior">{paginaAtual -1}</button>
-            <button id='pagina_atual' className="pagina_atual">{paginaAtual}</button>
-            <button id='pagina_posterior' className="">{paginaAtual +  1}</button>
-          </div>
-          <div className="action">
-            <button className="btn_right "id="btn-page-right" onClick={handlePageRight}><img src={avancarIcon} alt="" /></button>
-            <button className="btn_last " id="btn-last" onClick={handleLastPage}><img src={doubleRightIcon} alt="" /></button>
-          </div>
-          
-        </div>
-        <span>Página {paginaAtual} de {ultimaPagina}</span>
+            dados={dados.map((medico, index) => {
+              return {
+                id: medico.id,
+                nome: medico.nome,
+                crm: medico.crm,
+                telefone: medico.pessoa.telefone,
+                email: medico.pessoa.email,
+                status: medico.status === true ? 'Ativo' : 'Inativo',
+                acoes:
+                  <div id="td_acoes">
+                    <button onClick={() => navigate(`/medicos/editar/${medico.id}`)}><img src={EditIcon} alt="" /></button>
+                    <button onClick={() => handleClickDelete(medico.id)}><img src={DeleteIcon} alt="" /></button>
+                  </div>
+              }
+            })}
+          />
           </div>
     </section>
   );
