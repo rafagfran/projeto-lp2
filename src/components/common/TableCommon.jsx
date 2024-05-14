@@ -6,7 +6,7 @@ import doubleLeftIcon from '../../assets/double-left-icon.png'
 import doubleRightIcon from '../../assets/double-right-icon.png'
 import SelectCommon from './SelectCommon'
 
-const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages}) => {
+const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages, filterNome, filterCrm, filterStatus, filterCpf}) => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const paginaAtual = pageNumber + 1
@@ -95,7 +95,15 @@ const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages}
               </thead>
                       
               <tbody className={styles.tbody}>
-                  {dados.map((item, rowIndex) => (
+                  {dados.filter((item) => {
+                    const Nome = filterNome.toLowerCase() === "" ? item : item.nome.toLowerCase().includes(filterNome.toLowerCase())
+                    const Crm = filterCrm.toLowerCase() === "" ? item : item.crm.toLowerCase().includes(filterCrm.toLowerCase())
+                    const Cpf = filterCpf.toLowerCase() === "" ? item : item.cpf.toLowerCase().includes(filterCpf.toLowerCase())
+                    const Status = filterStatus === 'all' || filterStatus === '' ? item : item.status  === (filterStatus === 'ativo' ? "Ativo" : "Inativo")
+
+                    return Nome && Crm && Status && Cpf
+
+                  }).map((item, rowIndex) => (
                       <tr className={styles.tr} key={rowIndex}>
                         {header.map((column, columnIndex) => (
                           <td key={columnIndex} className={column.name}>{item[column.name]}</td>

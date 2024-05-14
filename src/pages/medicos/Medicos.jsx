@@ -6,10 +6,6 @@ import styles from '../../styles/pages/medicos/Medicos.module.css';
 import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import InputCommon from '../../components/common/InputCommon.jsx';
 import SelectCommon from '../../components/common/SelectCommon.jsx';
-import voltarIcon from '../../assets/voltar-white-icon.png'
-import avancarIcon from '../../assets/avancar-white-icon.png'
-import doubleLeftIcon from '../../assets/double-left-icon.png'
-import doubleRightIcon from '../../assets/double-right-icon.png'
 
 import EditIcon from '../../assets/edit-icon.png'
 import DeleteIcon from '../../assets/delete-icon.png';
@@ -27,7 +23,6 @@ const Medicos = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
-  const [itemNumber, setItemNumber] = useState(0)
 
   const optionsFilterStatus = [
     {value: 'all', text: 'All'},
@@ -102,6 +97,10 @@ const Medicos = () => {
             alterPageSize={handlePageSizeChange} 
             alterPageNumber={handlePageNumberChange}
             totalPages={totalPages}
+            filterNome={ filtroNome}
+            filterCrm={filtroCrm}
+            filterStatus={filtroStatus}
+            filterCpf={""}
             header={[
               {name: 'nome', text: 'Nome'},
               {name: 'crm', text: 'CRM'},
