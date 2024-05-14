@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import Style from '../../../styles/components/layout/sidebar/Sidebar.module.css'
 
 import homeIcon from '../../../assets/home-icon.png'
-import medicoIcon from '../../../assets/medico-icon.png'
-import pacienteIcon from '../../../assets/paciente-icon.png'
-import agendamentoIcon from '../../../assets/agendamento-icon.png'
-import internacaoIcon from '../../../assets/internacao-icon.png'
+import medicoIcon from '../../../assets/icons/medico.png'
+import pacienteIcon from '../../../assets/icons/paciente.png'
+import agendamentoIcon from '../../../assets/icons/agenda.png'
+import internacaoIcon from '../../../assets/icons/internacao.png'
 
 const Sidebar = () => {
   return (
