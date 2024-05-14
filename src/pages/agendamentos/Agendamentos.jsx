@@ -5,11 +5,6 @@ import styles from '../../styles/pages/agendamentos/Agendamentos.module.css';
 
 import ButtonCommon from '../../components/common/ButtonCommon.jsx';
 import InputCommon from '../../components/common/InputCommon.jsx';
-import SelectCommon from '../../components/common/SelectCommon.jsx';
-import voltarIcon from '../../assets/voltar-white-icon.png'
-import avancarIcon from '../../assets/avancar-white-icon.png'
-import doubleLeftIcon from '../../assets/double-left-icon.png'
-import doubleRightIcon from '../../assets/double-right-icon.png'
 import AgendamentosCrud from '../../CRUD/AgendamentosCrud'
 
 import EditIcon from '../../assets/edit-icon.png'
@@ -20,17 +15,12 @@ const Agendamentos = () => {
   const navigate = useNavigate()
 
 
-  const [filtroNome, setFiltroNome] = useState('')
-  const [filtroStatus, setFiltroStatus] = useState('all')
-  const [filtroCpf, setfiltroCpf] = useState('')
+  const [filtroTipo, setFiltroTipo] = useState('')
 
   const [dados, setDados] = useState([])
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
-  const paginaAtual = pageNumber + 1
-  const ultimaPagina = totalPages
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,16 +77,21 @@ const Agendamentos = () => {
           </div>
           <div className={styles.filters}>
             <div className={styles.filter_nome} >
-              <InputCommon  type="text" id='filter_nome' textLabel="Buscar nome" onchangeInputSet={setFiltroNome} placeholder="Buscar"/>
+              <InputCommon  type="text" id='filter_tipo' textLabel="Buscar tipo" onchangeInputSet={setFiltroTipo} placeholder="Buscar"/>
             </div>
             <div className={styles.filter_cpf}>
-              <InputCommon  className={styles.filter_cpf} type="text" id='filter_cpf' textLabel="Buscar CPF" onchangeInputSet={setfiltroCpf} placeholder="Buscar"/>
+              <InputCommon  className={styles.filter_cpf} type="text" id='filter_cpf' textLabel="Buscar CPF" onchangeInputSet={""} placeholder="Buscar"/>
             </div>
           </div>
           <TableCommon 
             alterPageSize={handlePageSizeChange}
             alterPageNumber={handlePageNumberChange}
             totalPages={totalPages}
+            filterNome={""}
+            filterCrm={""}
+            filterStatus={""}
+            filterCpf={""}
+            filterTipoConsulta={filtroTipo}
             header={[
               {name: 'tipo_consulta', text: 'Tipo de consulta'},
               {name: 'nome_médico', text: 'Nome do médico'},

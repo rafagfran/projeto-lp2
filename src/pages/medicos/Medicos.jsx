@@ -101,6 +101,7 @@ const Medicos = () => {
             filterCrm={filtroCrm}
             filterStatus={filtroStatus}
             filterCpf={""}
+            filterTipoConsulta={""}
             header={[
               {name: 'nome', text: 'Nome'},
               {name: 'crm', text: 'CRM'},

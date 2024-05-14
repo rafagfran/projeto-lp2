@@ -6,7 +6,7 @@ import doubleLeftIcon from '../../assets/double-left-icon.png'
 import doubleRightIcon from '../../assets/double-right-icon.png'
 import SelectCommon from './SelectCommon'
 
-const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages, filterNome, filterCrm, filterStatus, filterCpf}) => {
+const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages, filterNome, filterCrm, filterStatus, filterCpf, filterTipoConsulta}) => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const paginaAtual = pageNumber + 1
@@ -97,11 +97,16 @@ const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages,
               <tbody className={styles.tbody}>
                   {dados.filter((item) => {
                     const Nome = filterNome.toLowerCase() === "" ? item : item.nome.toLowerCase().includes(filterNome.toLowerCase())
+                    
                     const Crm = filterCrm.toLowerCase() === "" ? item : item.crm.toLowerCase().includes(filterCrm.toLowerCase())
+
                     const Cpf = filterCpf.toLowerCase() === "" ? item : item.cpf.toLowerCase().includes(filterCpf.toLowerCase())
+
+                    const tipoConsulta = filterTipoConsulta.toLowerCase() === "" ? item : item.tipo_consulta.toLowerCase().includes(filterTipoConsulta.toLowerCase())
+
                     const Status = filterStatus === 'all' || filterStatus === '' ? item : item.status  === (filterStatus === 'ativo' ? "Ativo" : "Inativo")
 
-                    return Nome && Crm && Status && Cpf
+                    return Nome && Crm && Status && Cpf && tipoConsulta
 
                   }).map((item, rowIndex) => (
                       <tr className={styles.tr} key={rowIndex}>
