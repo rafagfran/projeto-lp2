@@ -1,3 +1,9 @@
+
+.pagination{
+  max-width: 120px;
+  
+}
+
 .table_container {
     overflow-x: auto;
     width: 100%;
