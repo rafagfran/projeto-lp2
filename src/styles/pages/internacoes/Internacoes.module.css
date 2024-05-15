@@ -1,4 +1,4 @@
-.agendamentos{
+.internacoes{
     display: flex;
     flex-direction: column;  
     flex: 1;
@@ -36,12 +36,12 @@
     gap: 10px;
 }
 
-.filter_nome{
+.filter_nome_paciente{
     grid-column-start: 1;
     grid-column-end: 4;
 }
 
-.filter_data{
+.filter_nome_medico{
     grid-column-start: 4;
     grid-column-end: 7;
 }

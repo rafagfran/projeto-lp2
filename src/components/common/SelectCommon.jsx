@@ -1,8 +1,14 @@
 import React from 'react'
 
+
 const SelectCommon = ({id, defaultValue, onchangeSet, textLabel, options}) => {
+
+  const styleSelect = {
+    display: 'flex',
+    flexDirection: 'column',
+  }
   return (
-    <>
+    <div style={styleSelect}>
         <label htmlFor={id}>{textLabel}</label>
         <select name={id} id={id} defaultValue={defaultValue} onChange={(e) => {onchangeSet(e.target.value)}}>
             {options.map(option => (
@@ -10,7 +16,7 @@ const SelectCommon = ({id, defaultValue, onchangeSet, textLabel, options}) => {
             ))}
             
         </select>
-    </>
+    </div>
   )
 }
 

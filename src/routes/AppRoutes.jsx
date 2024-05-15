@@ -10,6 +10,9 @@ import Agendamentos from '../pages/agendamentos/Agendamentos'
 import Internacoes from '../pages/internacoes/Internacoes'
 import CadastroPaciente from '../pages/pacientes/CadastroPaciente'
 import EditarPaciente from '../pages/pacientes/EditarPaciente'
+import CadastroInternacao from '../pages/internacoes/CadastroInternacao'
+import EditarInternacao from '../pages/internacoes/EditarInternacao'  
+import CadastroAgendamento from '../pages/agendamentos/CadastrarAgendamento'
 
 const AppRoutes = () => {
   return (
@@ -24,7 +27,11 @@ const AppRoutes = () => {
                 <Route path="home/pacientes/cadastro" element={<CadastroPaciente/>} />
                 <Route path="home/pacientes/editar/:id" element={<EditarPaciente/>} />
                 <Route path="home/agendamentos" element={<Agendamentos/>} />
+                <Route path="home/agendamentos/cadastro" element={<CadastroAgendamento/>} />
+                <Route path="home/agendamentos/editar/:id" element={<EditarInternacao/>} />
                 <Route path="home/internacoes" element={<Internacoes/>} />
+                <Route path="home/internacoes/cadastro" element={<CadastroInternacao/>} />
+                <Route path="home/internacoes/editar/:id" element={<EditarInternacao/>} />
             </Route>
         </Routes>
     </BrowserRouter>

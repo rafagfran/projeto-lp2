@@ -6,7 +6,7 @@ import doubleLeftIcon from '../../assets/double-left-icon.png'
 import doubleRightIcon from '../../assets/double-right-icon.png'
 import SelectCommon from './SelectCommon'
 
-const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages, filterNome, filterCrm, filterStatus, filterCpf, filterTipoConsulta}) => {
+const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages, filterNome, filterCrm, filterStatus, filterCpf, filterTipoConsulta, filterData, filterNomePaciente, filterNomeMedico }) => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const paginaAtual = pageNumber + 1
@@ -89,7 +89,7 @@ const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages,
               <thead className={styles.thead}>
                   <tr className={styles.tr}>
                     {header.map((column, columnIndex) => (
-                      <th key={columnIndex} className={column.name}>{column.text}</th>
+                      <th key={columnIndex} className={`column_${column.name}`}>{column.text}</th>
                     ))}
                   </tr>
               </thead>
@@ -97,6 +97,10 @@ const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages,
               <tbody className={styles.tbody}>
                   {dados.filter((item) => {
                     const Nome = filterNome.toLowerCase() === "" ? item : item.nome.toLowerCase().includes(filterNome.toLowerCase())
+
+                    const NomePaciente = filterNomePaciente.toLowerCase() === "" ? item : item.nome_paciente.toLowerCase().includes(filterNomePaciente.toLowerCase())
+
+                    const NomeMedico = filterNomeMedico.toLowerCase() === "" ? item : item.nome_medico.toLowerCase().includes(filterNomeMedico.toLowerCase())
                     
                     const Crm = filterCrm.toLowerCase() === "" ? item : item.crm.toLowerCase().includes(filterCrm.toLowerCase())
 
@@ -104,14 +108,16 @@ const TableCommon = ({header, dados, alterPageSize, alterPageNumber, totalPages,
 
                     const tipoConsulta = filterTipoConsulta.toLowerCase() === "" ? item : item.tipo_consulta.toLowerCase().includes(filterTipoConsulta.toLowerCase())
 
+                    const data = filterData.toLowerCase() === "" ? item : item.data.toLowerCase().includes(filterData.toLowerCase())
+
                     const Status = filterStatus === 'all' || filterStatus === '' ? item : item.status  === (filterStatus === 'ativo' ? "Ativo" : "Inativo")
 
-                    return Nome && Crm && Status && Cpf && tipoConsulta
+                    return Nome && Crm && Status && Cpf && tipoConsulta && data && NomePaciente && NomeMedico
 
                   }).map((item, rowIndex) => (
                       <tr className={styles.tr} key={rowIndex}>
                         {header.map((column, columnIndex) => (
-                          <td key={columnIndex} className={column.name}>{item[column.name]}</td>
+                          <td key={columnIndex} className={`column_${column.name}`}>{item[column.name]}</td>
                         ))}
                       </tr>  
                   ))}
