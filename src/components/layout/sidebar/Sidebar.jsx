@@ -12,7 +12,7 @@ const Sidebar = () => {
   return (
     <div className={Style.sidebar}>
       <div className={Style.logo}>       
-        <h1>Healthplus</h1>
+        <Link to='home'>Healthplus</Link>
       </div>
       <div className={Style.links}>
         <nav>

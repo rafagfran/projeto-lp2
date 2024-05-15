@@ -7,12 +7,20 @@
     padding: 20px 10px;
 }
 .logo{
-    margin-bottom: 30px;
+    margin-bottom: 50px;
     color: white;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.logo > a{
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+
 }
 
 .links > nav > ul{
@@ -29,7 +37,20 @@
     align-items: center;
     font-weight: 300;
     font-size: 1rem;
+    transition: .2s;
+    border-radius: 10px;
+    padding: 5px
 }
+
+.links > nav > ul > li > a:hover{
+    color: #ffd900dc;
+    background: #01011b5e;
+    
+}
+
+
+
+
 
 .links > nav > ul > li > a > img{
     width: 25px;

@@ -67,7 +67,7 @@ const CadastrarAgendamento = () => {
         <div className={styles.form}>
           <InputCommon id="data_agendamento" type="text" textLabel="Data do agendamento" textSpan="*" onchangeInputSet={setDataAgendamento}/>
           <InputCommon id="tipo_consulta" type="text" textLabel="Tipo da consulta" textSpan="*" onchangeInputSet={setTipoConsulta}/>          
-          <SelectCommon id='medicos'  options={listaMedicos} onchangeSet={setMedicoResponsavel} textLabel="Médico reponsável"/>
+          <SelectCommon id='medicos' defaultValue={null} options={listaMedicos} onchangeSet={setMedicoResponsavel} textLabel="Médico reponsável"/>
           <SelectCommon id='pacientes'  options={listaPacientes} onchangeSet={setPaciente} textLabel="Paciente"/>
         </div>
         <div className={styles.action}>
