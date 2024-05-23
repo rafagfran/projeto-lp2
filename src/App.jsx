@@ -1,15 +1,11 @@
-import './App.css'
-import AppRoutes from './routes/AppRoutes'
+  import './App.css'
+  import PublicRoutes from './routes/PublicRoutes'
+  function App() {
+    return (
+      <>
+        <PublicRoutes />
+      </>
+    )
+  }
 
-
-function App() {
-
-
-  return (
-    <>
-      <AppRoutes />
-    </>
-  )
-}
-
-export default App
+  export default App

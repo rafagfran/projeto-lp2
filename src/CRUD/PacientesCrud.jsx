@@ -15,7 +15,7 @@ export default class PacientesCrud {
     async create(data){
         try {
             const response = await axios.post(this.#urlCreate, data)
-            return response.status
+            return response
         } catch (error) {
             console.error('Erro ao criar o médico:', error);
             throw error;   
@@ -71,7 +71,7 @@ export default class PacientesCrud {
     async delete(id){
         try {
             const response = await axios.delete(`${this.#urlDelete}?id=${id}`)
-            return response.data
+            return response
         } catch (error) {
             throw error;   
         }

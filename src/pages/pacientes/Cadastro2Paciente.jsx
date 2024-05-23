@@ -2,11 +2,10 @@ import React from 'react'
 import styles from '../../styles/pages/medicos/CadastroMedico.module.css'
 import InputCommon from '../../components/common/InputCommon.jsx'
 import ButtonCommon from '../../components/common/ButtonCommon.jsx'
-import MedicosCrud from '../../CRUD/MedicosCrud.jsx'
+import axios from 'axios'
 
-const CadastroMedico = () => {
+const CadastroPaciente = () => {
   const [nome, setNome] = React.useState('')
-  const [crm, setCrm] = React.useState('')
   const [cpf, setCpf] = React.useState('')
   const [idade, setIdade] = React.useState(0)
   const [dataNascimento, setDataNascimento] = React.useState('')
@@ -16,73 +15,24 @@ const CadastroMedico = () => {
   const [cidade, setCidade] = React.useState('')
   const [cep, setCep] = React.useState('')
   const [numero, setNumero] = React.useState('')
+  const [nomeContatoEmergencia, setNomeContatoEmergencia] = React.useState('')
+  const [telefoneContato, setTelefoneContato] = React.useState('')
 
-  const isValidCPF = (cpf) => {
-      // Remove caracteres não numéricos
-    cpf = cpf.replace(/\D/g, '');
-
-    // Verifica se o CPF tem 11 dígitos
-      return cpf.length === 11;
-  };
-
-  const isValidCEP = (cep) => {
-      // Remove caracteres não numéricos
-    cep = cep.replace(/\D/g, '');
-
-    // Verifica se o CEP tem 8 dígitos
-    return cep.length === 8;
-  };
-
-  const isValidEmail = (email) => {
-    // Expressão regular para validar o e-mail
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-  
   const handleSubmit = async () => {
+      const url = 'http://localhost:8080/api/v1/patient/create'
 
-     // Validação dos campos
-    if (
-      !nome ||
-      !crm ||
-      !cpf ||
-      !idade ||
-      !dataNascimento ||
-      !sexo ||
-      !email ||
-      !telefone ||
-      !cidade ||
-      !cep ||
-      !numero
-    ) {
-      alert('Preencha todos os campos!');
-      return;
-    }
+      if(nome === '' ||  cpf === '' || idade === 0 || dataNascimento === '' || sexo === '' || email === '' || telefone === '' || cidade === '' || cep === '' || numero === '' || nomeContatoEmergencia === '' || telefoneContato === ''){
+        alert('Preencha todos os campos!')
+        return
+      }
 
-    if (isNaN(idade) || parseInt(idade) <= 0) {
-      alert('Idade deve ser um número válido!');
-      return;
-    }
-
-    if (!isValidCPF(cpf)) {
-      alert('CPF inválido!');
-      return;
-    }
-
-    if (!isValidCEP(cep)) {
-      alert('CEP inválido!');
-      return;
-    }
-
-    if (!isValidEmail(email)) {
-      alert('E-mail inválido!');
-      return;
-    }
-      
+      if(isNaN(idade)){
+        alert('Idade deve ser um número!')
+        return
+      }
 
       const dataNewUser = {
         nome: nome, //String
-        crm: crm, //String
         cpf: cpf, //String
         idade: parseInt(idade), //int
         dataNascimento: dataNascimento,//String
@@ -92,17 +42,18 @@ const CadastroMedico = () => {
         cidade: cidade,//String
         cep: cep,//String
         numero: numero,//String
+        nomeContatoEmergencia: nomeContatoEmergencia,//String
+        telefoneContato: telefoneContato,//String
       }
 
       try {
-        const medicosCrud = new MedicosCrud()
-        const response = await medicosCrud.create(dataNewUser)
-        console.log(response)
-        if (response.status === 201) {
-          alert('Médico cadastrado com sucesso!')
+        const response = await axios.post(url, dataNewUser)
+        console.log(response.status)
+        if (response.status === 200) {
+          alert('Paciente cadastrado com sucesso!')
         }
       } catch (error) { 
-        console.error('Erro ao cadastrar o médico:', error) 
+        console.error('Erro ao cadastrar o paciente:', error) 
         alert('Erro ao cadastrar o médico, tente novamente!')
     }
   }
@@ -112,7 +63,6 @@ const CadastroMedico = () => {
       <div className={styles.cadastro_medico_container}>
         <div className={styles.form}>
           <InputCommon id="nome" type="text" textLabel="Nome completo" textSpan="*" onchangeInputSet={setNome}/>
-          <InputCommon id="crm" type="text" textLabel="CRM" textSpan="*" onchangeInputSet={setCrm}/>
           <InputCommon id="cpf" type="text" textLabel="CPF" textSpan="*" onchangeInputSet={setCpf} maxLength={11}/>
           <InputCommon id="idade" type="text" textLabel="Idade" textSpan="*" onchangeInputSet={setIdade}/>
           <InputCommon id="dataNascimento" type="text" textLabel="Data de Nascimento" textSpan="*" onchangeInputSet={setDataNascimento}/>
@@ -120,8 +70,10 @@ const CadastroMedico = () => {
           <InputCommon id="email" type="text" textLabel="Email" textSpan="*" onchangeInputSet={setEmail}/>
           <InputCommon id="telefone" type="text" textLabel="Telefone" textSpan="*" onchangeInputSet={setTelefone}/>
           <InputCommon id="cidade" type="text" textLabel="Cidade" textSpan="*" onchangeInputSet={setCidade}/>
-          <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" onchangeInputSet={setCep} maxLength={8}/>
+          <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" onchangeInputSet={setCep} maxLength={9}/>
           <InputCommon id="numero" type="text" textLabel="Numero" textSpan="*" onchangeInputSet={setNumero}/>
+          <InputCommon id="contato_emergencia" type="text" textLabel="Nome do contato de emergencia" textSpan="*" onchangeInputSet={setNomeContatoEmergencia}/>
+          <InputCommon id="numero_contato" type="text" textLabel="Numero contato de emergencia" textSpan="*" onchangeInputSet={setTelefoneContato}/>
         </div>
         <div className={styles.action}>
           <ButtonCommon text="Cadastrar" paddingButton="5px 10px" handleClick={() => handleSubmit()}/>
@@ -132,4 +84,4 @@ const CadastroMedico = () => {
   )
 }
 
-export default CadastroMedico
+export default CadastroPaciente

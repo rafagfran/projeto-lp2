@@ -1,11 +1,11 @@
-.cadastro_paciente{
+.editar_agendamento{
     display: flex;
     flex-direction: column;
     flex: 1;
     padding: 30px;
 }
 
-.cadastro_paciente_container{
+.editar_agendamento_container{
     background: #dbdada;
     display: flex;
     flex-direction: column;

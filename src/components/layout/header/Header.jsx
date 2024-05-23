@@ -5,13 +5,13 @@ import styles from '../../../styles/components/layout/header/Header.module.css';
 
 const Header = () => {
   const location = useLocation();
-  const rotaAtual = location.pathname.slice(1);// Obtém a localização atual
+  const rotaAtual = location.pathname.replace(/\//g, " / ");// Obtém a localização atual
 
   return (
     <header className={styles.header}>
       <h1>Header</h1>
       <hr />
-      <span id={styles.rota_atual}>{rotaAtual}</span>
+      <span id={styles.rota_atual}>home{rotaAtual}</span>
     </header>
   );
 }

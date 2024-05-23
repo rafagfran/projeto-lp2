@@ -1,17 +1,16 @@
 import axios from 'axios';
 
-class AgendamentosCrud {
-    #baseUrl = 'http://localhost:8080/api/v1/appointment';
+class UserCrud {
+    #baseUrl = 'http://localhost:8080/api/v1/users';
 
     #endpoints = {
         getAll: '/getAll',
         create: '/create',
         update: '/update',
-        getByCpf: '/getByCpf',
         delete: '/delete',
         list: '/list',
-        getById: '/getById',
-        getByName: '/getByName'
+        getByUsername: '/getByUsername',
+        getByLogin: '/login'
     };
 
     async #request(method, endpoint, data = null, params = {}) {
@@ -23,7 +22,7 @@ class AgendamentosCrud {
                 data,
                 params
             });
-            return response.data;
+            return response;
         } catch (error) {
             console.error(`Erro na requisição ${method.toUpperCase()} para ${url}:`, error);
             throw error;
@@ -42,25 +41,22 @@ class AgendamentosCrud {
         return this.#request('get', this.#endpoints.getAll);
     }
 
-    getByCpf(cpf) {
-        return this.#request('get', `${this.#endpoints.getByCpf}/${cpf}`);
+    getByUsername(username) {
+        return this.#request('get', this.#endpoints.getByUsername, null, { username });
     }
 
-    getById(id) {
-        return this.#request('get', this.#endpoints.getById, null, { id });
-    }
-
-    getByName(name) {
-        return this.#request('get', `${this.#endpoints.getByName}/${name}`);
+    getByLogin(login) {
+        return this.#request('post', this.#endpoints.getByLogin, login);
     }
 
     delete(id) {
         return this.#request('delete', this.#endpoints.delete, null, { id });
     }
 
-    list(pageNumber, pageSize) {
-        return this.#request('get', this.#endpoints.list, null, { pageNumber, pageSize }).then(data => data.content);
+    async list(pageNumber, pageSize) {
+        const data = await this.#request('get', this.#endpoints.list, null, { pageNumber, pageSize });
+        return data.content;
     }
 }
 
-export default AgendamentosCrud;
+export default UserCrud;

@@ -30,10 +30,15 @@ const Pacientes = () => {
     if (confirm("Você deseja realmente excluir este item?")) {
       const pacientesCrud = new PacientesCrud()
       try {
-        const response = await pacientesCrud.delete(id)
-        alert(response.data)
+      const response = await pacientesCrud.delete(id)
+      console.log(response)
+      fetchData()
+      alert("Paciente excluído com sucesso!")
+     
       } catch (error) {
         console.error("Error deleting:", error);
+        alert("Erro ao excluir paciente, verifique se o mesmo não possui consultas cadastradas!")
+        
       }
     } else {
       // Código para cancelar a exclusão
@@ -41,21 +46,22 @@ const Pacientes = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const pacientesCrud = new PacientesCrud()
-        const response = await pacientesCrud.list(pageNumber, pageSize)
-        setDados(response)
-
-        const allData = await pacientesCrud.getAll()
-        const total = Math.ceil(allData.length / pageSize)
-        setTotalPages(total)
-      } catch (error) {
-        console.error('Erro ao recuperar os dados:', error);
-      }
-    }
     fetchData();
   }, [pageNumber, pageSize])
+
+  const fetchData = async () => {
+    try {
+      const pacientesCrud = new PacientesCrud()
+      const response = await pacientesCrud.list(pageNumber, pageSize)
+      setDados(response)
+
+      const allData = await pacientesCrud.getAll()
+      const total = Math.ceil(allData.length / pageSize)
+      setTotalPages(total)
+    } catch (error) {
+      console.error('Erro ao recuperar os dados:', error);
+    }
+  }
 
   const handlePageSizeChange = (newSize) => {
     setPageSize(newSize);

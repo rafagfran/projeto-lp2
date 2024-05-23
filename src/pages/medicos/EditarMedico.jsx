@@ -24,6 +24,30 @@ const EditarMedico = () => {
     const [numero, setNumero] = React.useState('')
     const [status, setStatus] = React.useState('')
 
+    const isValidCPF = (cpf) => {
+      // Remove caracteres não numéricos
+    cpf = cpf.replace(/\D/g, '');
+
+    // Verifica se o CPF tem 11 dígitos
+      return cpf.length === 11;
+  };
+
+  const isValidCEP = (cep) => {
+      // Remove caracteres não numéricos
+    cep = cep.replace(/\D/g, '');
+
+    // Verifica se o CEP tem 8 dígitos
+    return cep.length === 8;
+  };
+
+  const isValidEmail = (email) => {
+    // Expressão regular para validar o e-mail
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+
+
     useEffect(() => {
         const updateData = async () => {
             try {
@@ -49,6 +73,44 @@ const EditarMedico = () => {
     }, [])
 
     const handleSubmit = async () => {
+
+      if (
+        !nome ||
+        !crm ||
+        !cpf ||
+        !idade ||
+        !dataNascimento ||
+        !sexo ||
+        !email ||
+        !telefone ||
+        !cidade ||
+        !cep ||
+        !numero
+      ) {
+        alert('Preencha todos os campos!');
+        return;
+      }
+  
+      if (isNaN(idade) || parseInt(idade) <= 0) {
+        alert('Idade deve ser um número válido!');
+        return;
+      }
+  
+      if (!isValidCPF(cpf)) {
+        alert('CPF inválido!');
+        return;
+      }
+  
+      if (!isValidCEP(cep)) {
+        alert('CEP inválido!');
+        return;
+      }
+  
+      if (!isValidEmail(email)) {
+        alert('E-mail inválido!');
+        return;
+      }
+
       const updateData = {
         id: id,
         nome: nome,
@@ -68,10 +130,9 @@ const EditarMedico = () => {
         try {
           const medicosCrud = new MedicosCrud()
           const response = await medicosCrud.update(updateData)
-
           if(response === 200){
             alert('Médico atualizado com sucesso')
-            navigate('/home/medicos')
+            navigate('/medicos')
           }
         } catch (error) {
           console.log(error)
@@ -84,14 +145,14 @@ const EditarMedico = () => {
           <div className={styles.form}>
             <InputCommon id="nome" type="text" textLabel="Nome completo" textSpan="*" onchangeInputSet={setNome} defaultValue={nome}/>
             <InputCommon id="crm" type="text" textLabel="CRM" textSpan="*" onchangeInputSet={setCrm} defaultValue={crm}/>
-            <InputCommon id="cpf" type="text" textLabel="CPF" textSpan="*" onchangeInputSet={setCpf} defaultValue={cpf}/>
+            <InputCommon id="cpf" type="text" textLabel="CPF" textSpan="*" onchangeInputSet={setCpf} defaultValue={cpf} maxLength={11}/>
             <InputCommon id="idade" type="text" textLabel="Idade" textSpan="*" onchangeInputSet={setIdade} defaultValue={idade}/>
             <InputCommon id="dataNascimento" type="text" textLabel="Data de Nascimento" textSpan="*" onchangeInputSet={setDataNascimento} defaultValue={dataNascimento}/>
             <InputCommon id="sexo" type="text" textLabel="Sexo" textSpan="*" onchangeInputSet={setSexo} defaultValue={sexo}/>
             <InputCommon id="email" type="text" textLabel="Email" textSpan="*" onchangeInputSet={setEmail} defaultValue={email}/>
             <InputCommon id="telefone" type="text" textLabel="Telefone" textSpan="*" onchangeInputSet={setTelefone} defaultValue={telefone}/>
             <InputCommon id="cidade" type="text" textLabel="Cidade" textSpan="*" onchangeInputSet={setCidade} defaultValue={cidade}/>
-            <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" onchangeInputSet={setCep} defaultValue={cep}/>
+            <InputCommon id="cep" type="text" textLabel="CEP" textSpan="*" onchangeInputSet={setCep} defaultValue={cep} maxLength={8}/>
             <InputCommon id="numero" type="text" textLabel="Numero" textSpan="*" onchangeInputSet={setNumero} defaultValue={numero}/>
             <InputCommon id="status" type="text" textLabel="Status" textSpan="*" onchangeInputSet={setStatus} defaultValue={status}/>
           </div>

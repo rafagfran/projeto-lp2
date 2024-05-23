@@ -1,81 +1,106 @@
-import React, { useEffect } from 'react'
-import styles from '../../styles/pages/medicos/CadastroMedico.module.css'
-import InputCommon from '../../components/common/InputCommon.jsx'
-import ButtonCommon from '../../components/common/ButtonCommon.jsx'
-import AgendamentoCrud from '../../CRUD/AgendamentosCrud.jsx'
-import SelectCommon from '../../components/common/SelectCommon.jsx'
-import MedicosCrud from '../../CRUD/MedicosCrud.jsx'
-import PacientesCrud from '../../CRUD/PacientesCrud.jsx'
+import React, { useEffect, useState, useCallback } from 'react';
+import styles from '../../styles/pages/agendamentos/CadastroAgendamento.module.css';
+import InputCommon from '../../components/common/InputCommon.jsx';
+import ButtonCommon from '../../components/common/ButtonCommon.jsx';
+import AgendamentosCrud from '../../CRUD/AgendamentosCrud.jsx';
+import MedicosCrud from '../../CRUD/MedicosCrud.jsx';
+import PacientesCrud from '../../CRUD/PacientesCrud.jsx';
+import SelectCommon from '../../components/common/SelectCommon.jsx';
 
-const CadastrarAgendamento = () => {
-  const [dataAgendamento, setDataAgendamento] = React.useState('')
-  const [tipoConsulta, setTipoConsulta] = React.useState('')
-  const [medicoResponsavel, setMedicoResponsavel] = React.useState('')
-  const [paciente, setPaciente] = React.useState('')
-  const [listaMedicos, setListaMedicos] = React.useState([])
-  const [listaPacientes, setListaPacientes] = React.useState([])
+const CadastroAgendamento = () => {
+  const [dataHora, setDataHora] = useState('');
+  const [tipoConsulta, setTipoConsulta] = useState('');
+  const [medicoId, setMedicoId] = useState('');
+  const [pacienteId, setPacienteId] = useState('');
+  const [medicos, setMedicos] = useState([]);
+  const [pacientes, setPacientes] = useState([]);
 
+  const agendamentosCrud = new AgendamentosCrud();
+  const medicosCrud = new MedicosCrud();
+  const pacientesCrud = new PacientesCrud();
 
-  const handleSubmit = async () => {
-      const agendamentoCrud = new AgendamentoCrud()
-
-      if(!dataInternacao || !diagnostico || !medicoResponsavel || !paciente){
-        alert('Preencha todos os campos!')
-        return
-      }
-
-      const dadosAgendamento = {
-        dataAgendamento: dataAgendamento,
-        tipoConsulta: tipoConsulta,
-        medicoResponsavel: medicoResponsavel,
-        paciente: paciente
-      }
-
-      try {
-        const response = await agendamentoCrud.create(dadosAgendamento)
-        console.log(response.status)
-        if (response.status === 200) {
-          alert('Internação cadastrada com sucesso!')
-        }
-      } catch (error) { 
-        console.error('Erro ao cadastrar a internação:', error) 
-        alert('Erro ao cadastrar a internação, tente novamente!')
+  const fetchMedicosEPacientes = useCallback(async () => {
+    try {
+      const [medicosData, pacientesData] = await Promise.all([
+        medicosCrud.getAll(),
+        pacientesCrud.getAll()
+      ]);
+      setMedicos(medicosData);
+      setPacientes(pacientesData);
+    } catch (error) {
+      console.error('Erro ao recuperar médicos e pacientes:', error);
     }
-  }
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const medicosCrud = new MedicosCrud()
-      try {
-        const medicos = await medicosCrud.getAll()
-        setListaMedicos(medicos.map(medico => ({ value: medico.id, text: medico.nome })))
+    fetchMedicosEPacientes();
+  }, [fetchMedicosEPacientes]);
 
-        const pacientesCrud = new PacientesCrud()
-        const pacientes = await pacientesCrud.getAll()
-        setListaPacientes(pacientes.map(paciente => ({ value: paciente.id, text: paciente.nome })))
-
-      } catch (error) {
-        console.error('Erro ao buscar os médicos:', error)
-      }
+  const handleSubmit = useCallback(async () => {
+    if (!dataHora || !tipoConsulta || !medicoId || !pacienteId) {
+      alert('Preencha todos os campos!');
+      return;
     }
-    fetchData()
-  }, []) 
+
+    const dataNewAppointment = {
+      dataHora: dataHora,
+      tipoConsulta: tipoConsulta,
+      medicoId: parseInt(medicoId),
+      pacienteId: parseInt(pacienteId),
+    };
+
+    try {
+      const response = await agendamentosCrud.create(dataNewAppointment);
+      if (response === 201) {
+        alert('Agendamento cadastrado com sucesso!');
+      }
+    } catch (error) {
+      console.error('Erro ao cadastrar o agendamento:', error);
+      alert('Erro ao cadastrar o agendamento, tente novamente!');
+    }
+  }, [dataHora, tipoConsulta, medicoId, pacienteId, agendamentosCrud]);
 
   return (
-    <section className={styles.cadastro_medico}>
-      <div className={styles.cadastro_medico_container}>
+    <section className={styles.cadastro_agendamento}>
+      <div className={styles.cadastro_agendamento_container}>
         <div className={styles.form}>
-          <InputCommon id="data_agendamento" type="text" textLabel="Data do agendamento" textSpan="*" onchangeInputSet={setDataAgendamento}/>
-          <InputCommon id="tipo_consulta" type="text" textLabel="Tipo da consulta" textSpan="*" onchangeInputSet={setTipoConsulta}/>          
-          <SelectCommon id='medicos' defaultValue={null} options={listaMedicos} onchangeSet={setMedicoResponsavel} textLabel="Médico reponsável"/>
-          <SelectCommon id='pacientes'  options={listaPacientes} onchangeSet={setPaciente} textLabel="Paciente"/>
+          <div className={styles.inputWrapper}>
+            <InputCommon
+              id="dataHora"
+              type="datetime-local"
+              textLabel="Data e Hora"
+              textSpan="*"
+              onchangeInputSet={setDataHora}
+            />
+          </div>
+          <InputCommon
+            id="tipoConsulta"
+            type="text"
+            textLabel="Tipo de Consulta"
+            textSpan="*"
+            onchangeInputSet={setTipoConsulta}
+          />
+          <SelectCommon
+            id="medicoId"
+            defaultValue=""
+            onchangeSet={setMedicoId}
+            textLabel="Selecione o Médico *"
+            options={[{ value: '', text: 'Selecione' }, ...medicos.map(medico => ({ value: medico.id, text: medico.nome }))]}
+          />
+          <SelectCommon
+            id="pacienteId"
+            defaultValue=""
+            onchangeSet={setPacienteId}
+            textLabel="Selecione o Paciente *"
+            options={[{ value: '', text: 'Selecione' }, ...pacientes.map(paciente => ({ value: paciente.id, text: paciente.nome }))]}
+          />
         </div>
         <div className={styles.action}>
-          <ButtonCommon text="Cadastrar" paddingButton="5px 10px" handleClick={() => handleSubmit()}/>
+          <ButtonCommon text="Cadastrar" paddingButton="5px 10px" handleClick={handleSubmit} />
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default CadastrarAgendamento
+export default CadastroAgendamento;

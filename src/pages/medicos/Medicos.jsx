@@ -23,6 +23,7 @@ const Medicos = () => {
   const [pageNumber, setPageNumber] = useState(0)
   const [pageSize, setPageSize] = useState(10)
   const [totalPages, setTotalPages] = useState(0)
+  
 
   const optionsFilterStatus = [
     {value: 'all', text: 'All'},
@@ -42,8 +43,9 @@ const Medicos = () => {
     if (confirm("Você deseja realmente excluir este item?")) {
       const medicosCrud = new MedicosCrud()
       try {
-        const response = await medicosCrud.delete(id)
-        alert(response.data)
+        await medicosCrud.delete(id)
+        fetchData()
+        alert("Item excluído com sucesso!")
         
       } catch (error) {
         console.error("Error deleting:", error);
@@ -54,24 +56,23 @@ const Medicos = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const medicosCrud = new MedicosCrud()
-        const response = await medicosCrud.list(pageNumber, pageSize)
-        setDados(response)
-        
-        const allData = await medicosCrud.getAll()
-        const total = Math.ceil(allData.length / pageSize)
-        console.log(dados.content)
-        setTotalPages(total)
-      } catch (error) {
-        console.error('Erro ao recuperar os dados:', error);
-      }
-    }
     fetchData();
   }, [pageNumber, pageSize])
-
-
+    
+  const fetchData = async () => {
+    try {
+      const medicosCrud = new MedicosCrud()
+      const response = await medicosCrud.list(pageNumber, pageSize)
+      setDados(response)
+      
+      const allData = await medicosCrud.getAll()
+      const total = Math.ceil(allData.length / pageSize)
+      console.log(dados.content)
+      setTotalPages(total)
+    } catch (error) {
+      console.error('Erro ao recuperar os dados:', error);
+    }
+  }
   return (
     <section className={styles.medicos}>
         <header className={styles.header}>

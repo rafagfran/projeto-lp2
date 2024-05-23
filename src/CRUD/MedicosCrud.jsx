@@ -1,92 +1,66 @@
-import React from 'react'
 import axios from 'axios';
 
-export default class MedicosCrud{
+class MedicosCrud {
+    #baseUrl = 'http://localhost:8080/api/v1/doctor';
 
-    
-    #urlGetAll  = 'http://localhost:8080/api/v1/doctor/getAll';
-    #urlCreate = 'http://localhost:8080/api/v1/doctor/create';
-    #urlUpdate = 'http://localhost:8080/api/v1/doctor/update';
-    #urlGetByCrm = 'http://localhost:8080/api/v1/doctor/getByCrm';
-    #urlDelete = 'http://localhost:8080/api/v1/doctor/delete';
-    #urlList = 'http://localhost:8080/api/v1/doctor/list';
-    #urlGetById = 'http://localhost:8080/api/v1/doctor/getById';
-    #urlGetByName = 'http://localhost:8080/api/v1/doctor/getByName';
+    #endpoints = {
+        getAll: '/getAll',
+        create: '/create',
+        update: '/update',
+        getByCrm: '/getByCrm',
+        delete: '/delete',
+        list: '/list',
+        getById: '/getById',
+        getByName: '/getByName'
+    };
 
-
-    async create(data){
+    async #request(method, endpoint, data = null, params = {}) {
+        const url = `${this.#baseUrl}${endpoint}`;
         try {
-            const response = await axios.post(this.#urlCreate, data)
-            return response.status
+            const response = await axios({
+                method,
+                url,
+                data,
+                params
+            });
+            return response.data;
         } catch (error) {
-            console.error('Erro ao criar o médico:', error);
-            throw error;   
-        }
-    }
-
-    async update(data){
-        try {
-            const response = await axios.put(`${this.#urlUpdate}`, data)
-            return response.status
-        } catch (error) {
-            throw error;   
-        }
-    }
-
-
-    async getAll(){
-        try {
-            const response = await axios.get(this.#urlGetAll)
-            return response.data
-        } catch (error) {
+            console.error(`Erro na requisição ${method.toUpperCase()} para ${url}:`, error);
             throw error;
         }
     }
 
-    async getByCrm(crm){
-        try {
-            const response = await axios.get(`${this.#urlGetByCrm}/${crm}`)
-            return response.data
-        } catch (error) {
-            throw error;
-        }
+    create(data) {
+        return this.#request('post', this.#endpoints.create, data);
     }
 
-    async getById(id){
-        try {
-            const response = await axios.get(`${this.#urlGetById}?id=${id}`) // Passar o ID como query string
-            return response.data
-        } catch (error) {
-            throw error;
-        }
+    update(data) {
+        return this.#request('put', this.#endpoints.update, data);
     }
 
-    async getByName(name){
-        try {
-            const response = await axios.get(`${this.#urlGetByName}/${name}`)
-            return response
-        } catch (error) {
-            throw error;
-        }
+    getAll() {
+        return this.#request('get', this.#endpoints.getAll);
     }
 
-    async delete(id){
-        try {
-            const response = await axios.delete(`${this.#urlDelete}?id=${id}`)
-            return response.data
-        } catch (error) {
-            throw error;   
-        }
+    getByCrm(crm) {
+        return this.#request('get', `${this.#endpoints.getByCrm}/${crm}`);
     }
 
-    async list(pageNumber, pageSize){
-        try {
-            const response = await axios.get(`${this.#urlList}?pageNumber=${pageNumber}&pageSize=${pageSize}`)
-            return response.data.content
-        } catch (error) {
-            throw error;
-        }
+    getById(id) {
+        return this.#request('get', this.#endpoints.getById, null, { id });
     }
 
+    getByName(name) {
+        return this.#request('get', this.#endpoints.getByName, null, { nome: name });
+    }
 
+    delete(id) {
+        return this.#request('delete', this.#endpoints.delete, null, { id });
+    }
+
+    list(pageNumber, pageSize) {
+        return this.#request('get', this.#endpoints.list, null, { pageNumber, pageSize }).then(data => data.content);
+    }
 }
+
+export default MedicosCrud;
